@@ -1,0 +1,464 @@
+<section id="tarifs" class="tarifs-section">
+    <h2>Des véhicules tout confort — Nos Tarifs</h2>
+    <div class="tarif-cards">
+  
+      <!-- Van Card -->
+      <div class="card">
+        <h3>Van</h3>
+        <img src="assets/images/cars/van.jpg" alt="Van" />
+        <button onclick="openModal('van')">Voir plus</button>
+      </div>
+  
+      <!-- Premium Card -->
+      <div class="card">
+        <h3>Premium</h3>
+        <img src="assets/images/cars/premium.jpg" alt="Premium" />
+        <button onclick="openModal('premium')">Voir plus</button>
+      </div>
+  
+      <!-- Eco Card -->
+      <div class="card">
+        <h3>Eco</h3>
+        <img src="assets/images/cars/eco.jpg" alt="Eco" />
+        <button onclick="openModal('eco')">Voir plus</button>
+      </div>
+  
+    </div>
+  
+    <div class="pop-out-card" id="premium-pop-out">
+        <div class="pop-out-header">
+          <h3>Berline Premium</h3>
+          <button class="pop-out-close" onclick="closePopOut()">×</button>
+        </div>
+        <div class="pop-out-slider-container">
+          <div class="pop-out-slider" id="premium-pop-out-slider">
+            <div class="pop-out-slide">
+              <img src="assets/images/cars/Premium.jpg" alt="Premium" />
+            </div>
+          </div>
+        </div>
+        <div class="pop-out-navigation">
+          <button
+            class="pop-out-nav-btn prev"
+            onclick="changePopOutSlide(-1, 'premium')"
+          >
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <div class="pop-out-indicators" id="premium-pop-out-indicators">
+            <span
+              class="pop-out-indicator active"
+              onclick="jumpToPopOutSlide(0, 'premium')"
+            ></span>
+          </div>
+          <button
+            class="pop-out-nav-btn next"
+            onclick="changePopOutSlide(1, 'premium')"
+          >
+            <i class="fas fa-arrow-right"></i>
+          </button>
+          <button class="pop-out-nav-btn" onclick="closePopOut()">
+            <i class="fas fa-arrow-left"></i> Retour
+          </button>
+        </div>
+      </div>
+  
+      <div class="pop-out-card" id="van-pop-out">
+        <div class="pop-out-header">
+          <h3>Van</h3>
+          <button class="pop-out-close" onclick="closePopOut()">×</button>
+        </div>
+        <div class="pop-out-slider-container">
+          <div class="pop-out-slider" id="van-pop-out-slider">
+            <div class="pop-out-slide">
+              <img src="assets/images/cars/van.jpg" alt="Van 1" loading="lazy">
+            </div>
+            <div class="pop-out-slide">
+              <img src="assets/images/cars/van1.jpg" alt="Van 2" loading="lazy">
+            </div>
+            <div class="pop-out-slide">
+              <img src="assets/images/cars/van2.jpg" alt="Van 3" loading="lazy">
+            </div>
+            <div class="pop-out-slide">
+              <img src="assets/images/cars/van3.jpg" alt="Van 4" loading="lazy">
+            </div>
+            <div class="pop-out-slide">
+              <img src="assets/images/cars/van4.jpg" alt="Van 5" loading="lazy">
+            </div>
+          </div>
+        </div>
+        <div class="pop-out-navigation">
+          <button class="pop-out-nav-btn prev" onclick="changeSlide(-1, 'van', true)">
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <div class="pop-out-indicators" id="van-pop-out-dots">
+            <span class="dot active" onclick="jumpToSlide(0, 'van', true)"></span>
+            <span class="dot" onclick="jumpToSlide(1, 'van', true)"></span>
+            <span class="dot" onclick="jumpToSlide(2, 'van', true)"></span>
+            <span class="dot" onclick="jumpToSlide(3, 'van', true)"></span>
+            <span class="dot" onclick="jumpToSlide(4, 'van', true)"></span>
+          </div>
+          <button class="pop-out-nav-btn next" onclick="changeSlide(1, 'van', true)">
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+  
+      <div class="pop-out-card" id="eco-pop-out">
+        <div class="pop-out-header">
+          <h3>Eco</h3>
+          <button class="pop-out-close" onclick="closePopOut()">×</button>
+        </div>
+        <div class="pop-out-slider-container">
+          <div class="pop-out-slider" id="eco-pop-out-slider">
+            <div class="pop-out-slide">
+              <img src="assets/images/cars/Eco.jpg" alt="Eco" />
+            </div>
+          </div>
+        </div>
+        <div class="pop-out-navigation">
+          <button
+            class="pop-out-nav-btn prev"
+            onclick="changePopOutSlide(-1, 'eco')"
+          >
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <div class="pop-out-indicators" id="eco-pop-out-indicators">
+            <span
+              class="pop-out-indicator active"
+              onclick="jumpToPopOutSlide(0, 'eco')"
+            ></span>
+          </div>
+          <button
+            class="pop-out-nav-btn next"
+            onclick="changePopOutSlide(1, 'eco')"
+          >
+            <i class="fas fa-arrow-right"></i>
+          </button>
+          <button class="pop-out-nav-btn" onclick="closePopOut()">
+            <i class="fas fa-arrow-left"></i> Retour
+          </button>
+        </div>
+      </div>
+    <!-- Modal Popup -->
+    <div class="modal" id="imageModal">
+      <span class="close" onclick="closeModal()">×</span>
+      <div class="modal-content">
+        <button class="nav prev" onclick="changeSlide(-1)">❮</button>
+        <img id="modalImage" src="" />
+        <button class="nav next" onclick="changeSlide(1)">❯</button>
+      </div>
+      <div class="dots" id="modalDots"></div>
+    </div>
+  </section>
+  <style>
+    .tarifs-section {
+  padding: 3rem 1rem;
+  background-color: #f8f8f8;
+  text-align: center;
+}
+.pop-out-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  display: none;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.pop-out-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.pop-out-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.pop-out-slider-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.pop-out-slider {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+}
+
+.pop-out-slide {
+  min-width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.pop-out-slide img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+}
+
+.pop-out-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pop-out-nav-btn {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.dot,
+.pop-out-indicator {
+  height: 10px;
+  width: 10px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dot.active,
+.pop-out-indicator.active {
+  background-color: #333;
+}
+
+.tarifs-section h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #222;
+}
+
+.tarif-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h3 {
+  margin-bottom: 0.5rem;
+  color: #007bff;
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.card button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 0.7rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.card button:hover {
+  background-color: #0056b3;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.9);
+}
+
+.modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
+.modal-content img {
+  max-width: 90%;
+  max-height: 80vh;
+  border-radius: 1rem;
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
+
+.nav {
+  background: rgba(255,255,255,0.3);
+  border: none;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+  margin: 0 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 50%;
+}
+
+.dots {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.dots span {
+  height: 10px;
+  width: 10px;
+  margin: 0 4px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dots span.active {
+  background-color: #fff;
+}
+
+  </style>
+  <script>
+    let currentSlide = { van: 0, premium: 0, eco: 0 };
+  
+    function openPopOut(type) {
+      document.getElementById(`${type}-pop-out`).style.display = 'block';
+      showSlide(type, currentSlide[type]);
+    }
+  
+    function closePopOut() {
+      document.querySelectorAll('.pop-out-card').forEach(el => el.style.display = 'none');
+    }
+  
+    function changeSlide(direction, type, isPopOut = false) {
+      const slides = document.querySelectorAll(`#${type}-pop-out-slider .pop-out-slide`);
+      currentSlide[type] = (currentSlide[type] + direction + slides.length) % slides.length;
+      showSlide(type, currentSlide[type]);
+    }
+  
+    function jumpToSlide(index, type, isPopOut = false) {
+      currentSlide[type] = index;
+      showSlide(type, currentSlide[type]);
+    }
+  
+    function showSlide(type, index) {
+      const slider = document.getElementById(`${type}-pop-out-slider`);
+      const slides = document.querySelectorAll(`#${type}-pop-out-slider .pop-out-slide`);
+      const indicators = document.querySelectorAll(`#${type}-pop-out-dots span, #${type}-pop-out-indicators span`);
+      
+      slider.style.transform = `translateX(-${index * 100}%)`;
+  
+      indicators.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+    }
+  </script>
+  
+  <script>
+    
+    const images = {
+      van: [
+        "assets/images/cars/van.jpg",
+        "assets/images/cars/van1.jpg",
+        "assets/images/cars/van2.jpg",
+        "assets/images/cars/van3.jpg",
+        "assets/images/cars/van4.jpg",
+      ],
+      premium: ["assets/images/cars/premium.jpg"],
+      eco: ["assets/images/cars/eco.jpg"],
+    };
+  
+    let currentCategory = "";
+    let currentIndex = 0;
+  
+    function openModal(category) {
+      currentCategory = category;
+      currentIndex = 0;
+      showSlide(currentIndex);
+  
+      document.getElementById("imageModal").style.display = "block";
+    }
+  
+    function closeModal() {
+      document.getElementById("imageModal").style.display = "none";
+    }
+  
+    function changeSlide(n) {
+      currentIndex += n;
+      if (currentIndex < 0) currentIndex = images[currentCategory].length - 1;
+      if (currentIndex >= images[currentCategory].length) currentIndex = 0;
+      showSlide(currentIndex);
+    }
+  
+    function showSlide(index) {
+      const modalImg = document.getElementById("modalImage");
+      const dotsContainer = document.getElementById("modalDots");
+      modalImg.src = images[currentCategory][index];
+  
+      // Update dots
+      dotsContainer.innerHTML = "";
+      images[currentCategory].forEach((_, i) => {
+        const dot = document.createElement("span");
+        dot.className = i === index ? "active" : "";
+        dot.onclick = () => {
+          currentIndex = i;
+          showSlide(i);
+        };
+        dotsContainer.appendChild(dot);
+      });
+    }
+  
+    // Close on ESC
+    window.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeModal();
+    });
+    
+  </script>
+  

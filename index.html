@@ -1,0 +1,4431 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>inayatransports.fr - Devis</title>
+    <script>
+      console.log('Hello from inline script!');
+    </script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* Slider styles - Enhanced Professional Design */
+      /* --- SLIDER CSS REMOVED --- */
+
+      .tariffs {
+        padding: 60px 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      }
+
+      .tariffs h2 {
+        text-align: center;
+        margin-bottom: 50px;
+        color: #333;
+        font-size: 2.5rem;
+        position: relative;
+        padding-bottom: 15px;
+      }
+
+      .tariffs h2::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+      }
+
+      .tariffs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 50px;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .tariff-item {
+        margin-bottom: 40px;
+        border-radius: 15px;
+        background: #fff;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        transition: all 0.4s ease;
+        position: relative;
+      }
+
+      .tariff-item:hover {
+        transform: translateY(-15px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      }
+
+      .tariff-item h3 {
+        margin: 0;
+        padding: 25px;
+        text-align: center;
+        color: #333;
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+        border-bottom: 1px solid #eee;
+        background: #f9f9f9;
+      }
+
+      .tariff-info {
+        padding: 25px;
+        background: linear-gradient(to bottom, #f9f9f9, #fff);
+        text-align: center;
+      }
+
+      .cta-button {
+        display: block;
+        width: 100%;
+        padding: 20px;
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.3rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .cta-button:hover {
+        background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Pop-out Card Slider */
+      .tariff-item {
+        position: relative;
+      }
+
+      .pop-out-trigger {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.8);
+        color: #333;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s ease;
+        opacity: 0.7;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .bg-white:hover .pop-out-trigger,
+      .slider-container:hover .pop-out-trigger {
+        opacity: 1;
+      }
+
+      .pop-out-trigger:hover {
+        background: white;
+        transform: scale(1.1);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+      }
+      
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+      
+      .pop-out-trigger i {
+        animation: pulse 2s infinite;
+      }
+
+      .pop-out-card {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        width: 90%;
+        max-width: 1200px;
+        height: 90vh;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        display: none;
+        opacity: 0;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+      }
+
+      .pop-out-card.active {
+        display: flex;
+        flex-direction: column;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      .pop-out-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 25px;
+        border-bottom: 1px solid #eee;
+        background: #f8f9fa;
+      }
+
+      .pop-out-header h3 {
+        margin: 0;
+        font-size: 2rem;
+        color: #333;
+      }
+
+      .pop-out-close {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: #777;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+      }
+
+      .pop-out-close:hover {
+        color: #333;
+        background: rgba(0, 0, 0, 0.05);
+        transform: scale(1.1);
+      }
+
+      .pop-out-slider-container {
+        position: relative;
+        width: 100%;
+        flex: 1;
+        overflow: hidden;
+        background: #f5f5f5;
+      }
+
+      .pop-out-slider {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .pop-out-slide {
+        min-width: 100%;
+        height: 100%;
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f5f5f5;
+      }
+
+      .pop-out-slide img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .pop-out-navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 25px;
+        background: #f8f9fa;
+        border-top: 1px solid #eee;
+      }
+
+      .pop-out-nav-btn {
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        padding: 12px 24px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .pop-out-nav-btn:hover {
+        background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .pop-out-nav-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      /* Mobile Responsive Styles */
+      @media (max-width: 768px) {
+        .pop-out-card {
+          width: 100%;
+          height: 100vh;
+          margin: 0;
+          border-radius: 0;
+          top: 0;
+          left: 0;
+          transform: translateY(100%);
+        }
+
+        .pop-out-card.active {
+          transform: translateY(0);
+        }
+
+        .pop-out-slider-container {
+          height: calc(100vh - 120px); /* Account for header and navigation */
+        }
+
+        .pop-out-slider {
+          height: 100%;
+          touch-action: pan-y pinch-zoom;
+        }
+
+        .pop-out-slide {
+          height: 100%;
+          width: 100vw;
+          padding: 20px;
+          box-sizing: border-box;
+        }
+
+        .pop-out-slide img {
+          max-width: 100%;
+          max-height: 100%;
+          width: auto;
+          height: auto;
+          object-fit: contain;
+          display: block;
+        }
+
+        .pop-out-header {
+          padding: 15px;
+          background: #fff;
+          border-bottom: 1px solid #eee;
+        }
+
+        .pop-out-navigation {
+          padding: 15px;
+          background: #fff;
+          border-top: 1px solid #eee;
+        }
+
+        .pop-out-nav-btn {
+          width: 40px;
+          height: 40px;
+          background: rgba(255, 255, 255, 0.9);
+          border: none;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 18px;
+          color: #333;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .pop-out-nav-btn:active {
+          background: rgba(255, 255, 255, 1);
+          transform: scale(0.95);
+        }
+
+        .pop-out-indicators {
+          display: flex;
+          gap: 8px;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: rgba(0, 0, 0, 0.3);
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .dot.active {
+          background: #3a7bd5;
+          transform: scale(1.2);
+        }
+      }
+
+      /* Touch Device Optimizations */
+      @media (hover: none) {
+        .pop-out-slider {
+          -webkit-overflow-scrolling: touch;
+          scroll-snap-type: x mandatory;
+        }
+
+        .pop-out-slide {
+          scroll-snap-align: start;
+          scroll-snap-stop: always;
+        }
+      }
+
+      /* Prevent body scroll when popup is open */
+      body.popup-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+      }
+
+      .overlay-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .overlay-bg.active {
+        display: block;
+        opacity: 1;
+      }
+
+      .hero-text {
+        text-align: center;
+        padding: 50px 20px;
+        background: rgba(0, 0, 0, 0.6);
+        /* Transparent black */
+        color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+      }
+
+      .hero-text h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .hero-text p {
+        font-size: 1.2rem;
+        font-weight: 300;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      @media (max-width: 600px) {
+        .reservation-form {
+          margin-top: 3cm;
+          width: 90%;
+          padding: 10px;
+          font-size: 0.9rem;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+
+      .language-icon {
+        width: 20px;
+        /* Adjust size as needed */
+        filter: brightness(0) invert(1);
+        /* Make the icon white */
+      }
+
+      .language-dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .language-dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: black;
+        min-width: 100px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        border-radius: 5px;
+      }
+
+      .language-dropdown-content a {
+        color: white;
+        padding: 10px 15px;
+        text-decoration: none;
+        display: block;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .language-dropdown-content a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .language-dropdown:hover .language-dropdown-content {
+        display: block;
+      }
+
+      /* RTL Support for Arabic */
+      .rtl {
+        direction: rtl;
+        text-align: right;
+      }
+
+      /* Layout spacing in RTL mode */
+      .rtl header {
+        padding-right: 2cm;
+        /* Add 2cm space on the right side */
+        padding-left: 2cm;
+        /* Balance with equal space on left side */
+      }
+
+      /* Website name styling in RTL */
+      .rtl .logo {
+        text-align: right;
+        margin-right: 1cm;
+        /* Add space after the logo in RTL */
+      }
+
+      .rtl .logo h1 {
+        font-weight: bold;
+      }
+
+      /* Menu spacing in RTL mode */
+      .rtl .nav-menu ul {
+        padding-left: 2cm;
+        /* Space on the left side in RTL mode */
+        padding-right: 2cm;
+        /* Space on the right side in RTL mode */
+        justify-content: space-between;
+      }
+
+      /* Hamburger menu in RTL */
+      .rtl .hamburger {
+        left: 20px;
+        right: auto;
+      }
+
+      /* Ensure form alignment in RTL */
+      .rtl .form-group label {
+        text-align: right;
+      }
+
+      .rtl input,
+      .rtl textarea {
+        text-align: right;
+      }
+
+      /* Responsive adjustments for RTL mode */
+      @media (max-width: 992px) {
+        .rtl header {
+          padding-right: 1.5cm;
+          padding-left: 1.5cm;
+        }
+
+        .rtl .nav-menu ul {
+          padding-left: 1.5cm;
+          padding-right: 1.5cm;
+        }
+
+        .rtl .logo {
+          margin-right: 0.5cm;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .rtl header {
+          padding-right: 1cm;
+          padding-left: 1cm;
+        }
+
+        .rtl .nav-menu.active {
+          padding-left: 1cm;
+          padding-right: 1cm;
+          left: 0;
+          right: 0;
+        }
+
+        .rtl .nav-menu ul {
+          padding-left: 0.5cm;
+          padding-right: 0.5cm;
+        }
+
+        .rtl .logo {
+          margin-right: 0.3cm;
+        }
+      }
+
+      .rtl .slider {
+        direction: ltr;
+        /* Keep slider direction left-to-right for proper functioning */
+      }
+
+      .rtl .slide-overlay {
+        direction: rtl;
+        text-align: right;
+        align-items: flex-end;
+        padding-left: 20px;
+        padding-right: 1.5cm;
+      }
+
+      .rtl .prev {
+        right: 15px;
+        left: auto;
+      }
+
+      .rtl .next {
+        left: 15px;
+        right: auto;
+      }
+
+      .rtl .pop-out-slider {
+        direction: ltr;
+        /* Keep slider direction left-to-right */
+      }
+
+      .rtl .pop-out-navigation {
+        flex-direction: row-reverse;
+      }
+
+      .rtl .language-dropdown-content {
+        right: 0;
+        left: auto;
+      }
+
+      /* Improved options styling */
+      .options-container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 15px;
+      }
+
+      .option-btn {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .option-btn:hover {
+        transform: translateY(-3px);
+      }
+
+      .rtl .options-container {
+        flex-direction: row;
+        /* Keep same direction even in RTL */
+      }
+
+      /* Make the options more visible in various layouts */
+      @media (max-width: 600px) {
+        .options-container {
+          gap: 12px;
+        }
+
+        .option-btn {
+          padding: 8px 12px;
+        }
+      }
+      
+      /* Enhanced Modal Results Styles */
+      .results-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(5px);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+      }
+      
+      .results-container.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      
+      .results-modal {
+        width: 90%;
+        max-width: 500px;
+        perspective: 1000px;
+      }
+      
+      .modal-content {
+        background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(58, 123, 213, 0.2);
+        position: relative;
+        transform-style: preserve-3d;
+        transform: rotateX(15deg) translateY(50px);
+        opacity: 0;
+        transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      
+      .results-container.active .modal-content {
+        transform: rotateX(0) translateY(0);
+        opacity: 1;
+      }
+      
+      @keyframes modalAppear {
+        0% {
+          transform: scale(0.8) rotateX(15deg) translateY(50px);
+          opacity: 0;
+        }
+        60% {
+          transform: scale(1.05) rotateX(0) translateY(0);
+        }
+        100% {
+          transform: scale(1) rotateX(0) translateY(0);
+          opacity: 1;
+        }
+      }
+      
+      .close-modal {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #aaa;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 5;
+      }
+      
+      .close-modal:hover {
+        color: #333;
+        transform: rotate(90deg);
+        background: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      
+      .modal-content h3 {
+        margin-bottom: 10px;
+        font-size: 28px;
+        color: #3a7bd5;
+        text-align: center;
+        font-weight: 700;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        position: relative;
+        padding-bottom: 15px;
+      }
+      
+      .modal-content h3::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 70px;
+        height: 3px;
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+        border-radius: 3px;
+      }
+      
+      .modal-success-message {
+        text-align: center;
+        background: rgba(46, 204, 113, 0.1);
+        border-radius: 12px;
+        padding: 15px;
+        margin: 15px 0 25px;
+        color: #27ae60;
+        font-weight: 500;
+        border-left: 4px solid #2ecc71;
+        animation: pulseGreen 2s infinite;
+      }
+      
+      @keyframes pulseGreen {
+        0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+      }
+      
+      .modal-cta {
+        text-align: center;
+        margin-top: 25px;
+      }
+      
+      .modal-cta-button {
+        display: inline-block;
+        padding: 12px 24px;
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+        color: white;
+        font-weight: 600;
+        border-radius: 50px;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+        transition: all 0.3s ease;
+        animation: fadeInUp 0.6s 0.5s backwards;
+      }
+      
+      .modal-cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 210, 255, 0.4);
+        background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+      }
+      
+      .form-group {
+        position: relative;
+        margin-bottom: 20px;
+        overflow: hidden;
+      }
+      
+      .results-label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #777;
+        font-weight: 500;
+        animation: fadeInUp 0.4s backwards;
+      }
+      
+      .form-group:nth-child(1) .results-label {
+        animation-delay: 0.1s;
+      }
+      
+      .form-group:nth-child(2) .results-label {
+        animation-delay: 0.2s;
+      }
+      
+      .form-group:nth-child(3) .results-label {
+        animation-delay: 0.3s;
+      }
+      
+      .results-input {
+        width: 100%;
+        padding: 14px;
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        animation: slideInRight 0.5s backwards;
+      }
+      
+      .form-group:nth-child(1) .results-input {
+        animation-delay: 0.2s;
+      }
+      
+      .form-group:nth-child(2) .results-input {
+        animation-delay: 0.3s;
+      }
+      
+      .form-group:nth-child(3) .results-input {
+        animation-delay: 0.4s;
+        font-size: 22px;
+        color: #27ae60;
+        background: rgba(46, 204, 113, 0.05);
+        border-color: rgba(46, 204, 113, 0.3);
+      }
+      
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      /* RTL support for modal */
+      .rtl .close-modal {
+        right: auto;
+        left: 20px;
+      }
+      
+      .rtl .modal-content h3,
+      .rtl .results-label {
+        text-align: right;
+      }
+      
+      .rtl .modal-content h3::after {
+        left: auto;
+        right: 50%;
+        transform: translateX(50%);
+      }
+      
+      .rtl .modal-success-message {
+        border-left: none;
+        border-right: 4px solid #2ecc71;
+      }
+      
+      .rtl .results-input {
+        text-align: right;
+      }
+      
+      /* Map Route Styles */
+      .route-map {
+        margin: 20px auto;
+      }
+      
+      .route-map {
+        height: 150px;
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+      
+      .map-image {
+        width: 100%;
+        height: 100%;
+        background-color: #e8f4fc;
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZDJkNmRjIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=');
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .map-route {
+        position: absolute;
+        width: 75%;
+        height: 5px;
+        background: #3a7bd5;
+        top: 50%;
+        left: 12.5%;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(58, 123, 213, 0.5);
+        transform: translateY(-50%);
+        animation: routePulse 2s infinite ease-in-out;
+        /* Add a slight curve to the route */
+        clip-path: path('M0,0 Q40,20 100,0');
+      }
+      
+      .map-route::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: rgba(58, 123, 213, 0.3);
+        border-radius: 8px;
+        filter: blur(5px);
+      }
+      
+      @keyframes routePulse {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 1; }
+      }
+      
+      .map-marker {
+        position: absolute;
+        font-size: 20px;
+        color: #e74c3c;
+        animation: markerBounce 1s infinite alternate ease-in-out;
+        filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+      }
+      
+      .city-label {
+        position: absolute;
+        font-size: 12px;
+        font-weight: bold;
+        background-color: white;
+        padding: 3px 8px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        white-space: nowrap;
+        transform: translateX(-50%);
+        top: -25px;
+        left: 50%;
+      }
+      
+      .start-marker .city-label {
+        color: #27ae60;
+        border-left: 3px solid #27ae60;
+      }
+      
+      .end-marker .city-label {
+        color: #e74c3c;
+        border-left: 3px solid #e74c3c;
+      }
+      
+      .start-marker {
+        left: 8%;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #27ae60;
+      }
+      
+      .end-marker {
+        right: 8%;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #e74c3c;
+      }
+      
+      @keyframes markerBounce {
+        0% { transform: translateY(-50%) scale(1); }
+        100% { transform: translateY(-50%) scale(1.2); }
+      }
+      
+      .map-car {
+        position: absolute;
+        font-size: 16px;
+        color: #3a7bd5;
+        top: 50%;
+        transform: translateY(-50%);
+        animation: mapCarDrive 4s infinite linear;
+        z-index: 5;
+        filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+      }
+      
+      @keyframes mapCarDrive {
+        0% {
+          left: 12%;
+          transform: translateY(-50%) translateY(-8px);
+        }
+        50% {
+          left: 50%;
+          transform: translateY(-50%) translateY(8px);
+        }
+        100% {
+          left: 88%;
+          transform: translateY(-50%) translateY(-8px);
+        }
+      }
+      
+      .rtl .map-car {
+        transform: translateY(-50%) scaleX(-1);
+        animation-direction: reverse;
+      }
+      
+      /* Contact Form Styles */
+      
+      /* Contact Form Styles */
+      
+      /* Contact Form Styles */
+      
+      /* RTL support for map */
+      .rtl .start-marker {
+        left: auto;
+        right: 8%;
+      }
+      
+      .rtl .end-marker {
+        right: auto;
+        left: 8%;
+      }
+      
+      /* Contact Form Styles */
+      .contact-section {
+        padding: 80px 0;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        position: relative;
+      }
+      
+      .contact-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: radial-gradient(circle at 10% 20%, rgba(0, 210, 255, 0.05) 0%, transparent 20%),
+                          radial-gradient(circle at 90% 30%, rgba(58, 123, 213, 0.05) 0%, transparent 20%),
+                          radial-gradient(circle at 30% 70%, rgba(0, 210, 255, 0.05) 0%, transparent 20%),
+                          radial-gradient(circle at 70% 80%, rgba(58, 123, 213, 0.05) 0%, transparent 20%);
+        background-size: 30% 30%, 30% 30%, 30% 30%, 30% 30%;
+        background-position: 0 0, 100% 0, 0 100%, 100% 100%;
+        animation: backgroundMove 60s linear infinite;
+        pointer-events: none;
+        opacity: 0.8;
+      }
+      
+      @keyframes backgroundMove {
+        0% {
+          background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%;
+        }
+        50% {
+          background-position: 100% 0%, 0% 100%, 100% 100%, 0% 0%;
+        }
+        100% {
+          background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%;
+        }
+      }
+      
+      .contact-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      
+      .contact-heading {
+        text-align: center;
+        color: #333;
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+        position: relative;
+        padding-bottom: 15px;
+      }
+      
+      .contact-heading::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+      }
+      
+      .contact-form {
+        background: #fff;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .contact-form:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      }
+      
+      .contact-form .form-group {
+        margin-bottom: 25px;
+        position: relative;
+        overflow: visible;
+      }
+      
+      .contact-form .input-icon-wrapper {
+        position: relative;
+      }
+      
+      .contact-form .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #aaa;
+        font-size: 16px;
+        transition: color 0.3s ease;
+        z-index: 2;
+      }
+      
+      .contact-form .textarea-wrapper .input-icon {
+        top: 25px;
+        transform: none;
+      }
+      
+      .contact-form .form-group:focus-within .input-icon {
+        color: #3a7bd5;
+      }
+      
+      .contact-form input,
+      .contact-form textarea {
+        width: 100%;
+        padding: 15px 20px 15px 45px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background-color: #f9f9f9;
+        color: #333;
+        height: 54px;
+      }
+      
+      .contact-form textarea {
+        min-height: 150px;
+        resize: vertical;
+        padding-top: 20px;
+      }
+      
+      .contact-form input:focus,
+      .contact-form textarea:focus {
+        border-color: #3a7bd5;
+        background-color: #fff;
+        box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
+        outline: none;
+      }
+      
+      /* Floating label effect */
+      .contact-form label {
+        position: absolute;
+        left: 45px;
+        top: 17px;
+        color: #aaa;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        pointer-events: none;
+        z-index: 1;
+      }
+      
+      .contact-form .textarea-wrapper label {
+        top: 20px;
+      }
+      
+      .contact-form input:focus ~ label,
+      .contact-form input:not(:placeholder-shown) ~ label,
+      .contact-form textarea:focus ~ label,
+      .contact-form textarea:not(:placeholder-shown) ~ label {
+        top: -12px;
+        left: 15px;
+        font-size: 12px;
+        padding: 0 5px;
+        background-color: #fff;
+        color: #3a7bd5;
+        font-weight: 600;
+        border-radius: 3px;
+      }
+      
+      /* Set input placeholder to transparent to prevent overlap with label */
+      .contact-form input::placeholder,
+      .contact-form textarea::placeholder {
+        color: transparent;
+      }
+      
+      .contact-form input:focus::placeholder,
+      .contact-form textarea:focus::placeholder {
+        color: transparent;
+      }
+      
+      .contact-btn {
+        display: flex;
+        width: 100%;
+        padding: 16px 20px;
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      
+      .contact-btn:hover {
+        background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+      }
+      
+      .contact-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      
+      .contact-btn i {
+        font-size: 16px;
+      }
+      
+      /* Input animation effects */
+      .contact-form .form-group::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+        transition: width 0.3s ease;
+      }
+      
+      .contact-form .form-group:focus-within::after {
+        width: 100%;
+      }
+      
+      /* Success message styling */
+      .form-success {
+        padding: 20px;
+        background-color: rgba(76, 175, 80, 0.1);
+        border: 2px solid #4CAF50;
+        border-radius: 8px;
+        color: #2e7d32;
+        text-align: center;
+        margin-bottom: 20px;
+        display: none;
+      }
+      
+      /* RTL support for contact form */
+      .rtl .contact-heading {
+        text-align: center;
+      }
+      
+      .rtl .contact-form input,
+      .rtl .contact-form textarea {
+        text-align: right;
+        direction: rtl;
+        padding: 15px 45px 15px 20px;
+      }
+      
+      .rtl .contact-form .input-icon {
+        left: auto;
+        right: 15px;
+      }
+      
+      .rtl .contact-form label {
+        left: auto;
+        right: 45px;
+      }
+      
+      .rtl .contact-form input:focus ~ label,
+      .rtl .contact-form input:not(:placeholder-shown) ~ label,
+      .rtl .contact-form textarea:focus ~ label,
+      .rtl .contact-form textarea:not(:placeholder-shown) ~ label {
+        left: auto;
+        right: 15px;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .contact-section {
+          padding: 60px 0;
+        }
+        
+        .contact-form {
+          padding: 30px 20px;
+        }
+        
+        .contact-heading {
+          font-size: 2rem;
+        }
+      }
+      
+      /* Form animation effects */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .contact-heading {
+        animation: fadeInUp 0.6s ease-out;
+      }
+      
+      .contact-form .form-group:nth-child(1) {
+        animation: fadeInUp 0.6s ease-out 0.2s forwards;
+        opacity: 0;
+      }
+      
+      .contact-form .form-group:nth-child(2) {
+        animation: fadeInUp 0.6s ease-out 0.4s forwards;
+        opacity: 0;
+      }
+      
+      .contact-form .form-group:nth-child(3) {
+        animation: fadeInUp 0.6s ease-out 0.6s forwards;
+        opacity: 0;
+      }
+      
+      .contact-btn {
+        animation: fadeInUp 0.6s ease-out 0.8s forwards;
+        opacity: 0;
+      }
+
+      /* Enhanced Address Input Styles */
+      .location-input {
+        position: relative;
+        margin-bottom: 25px;
+      }
+      
+      .location-input label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #444;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      
+      .location-input-wrapper {
+        position: relative;
+      }
+      
+      .location-input-wrapper i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #aaa;
+        font-size: 16px;
+        transition: color 0.3s ease;
+        z-index: 2;
+      }
+      
+      .location-input input {
+         width: 100%;
+         padding: 14px 14px 14px 40px;
+         border: 2px solid #ddd;
+         border-radius: 8px;
+         font-size: 14px;
+         transition: all 0.3s ease;
+         background-color: white;
+      }
+      
+      .location-input input:focus {
+        border-color: #3a7bd5;
+        box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
+        outline: none;
+      }
+      
+      .location-input input:focus + i {
+        color: #3a7bd5;
+      }
+      
+      .location-input .suggestions-container {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        max-height: 200px;
+        overflow-y: auto;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        display: none;
+      }
+      
+      .location-input .suggestions-container.active {
+        display: block;
+      }
+      
+      .location-input .suggestion-item {
+        padding: 10px 15px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        border-bottom: 1px solid #eee;
+      }
+      
+      .location-input .suggestion-item:hover,
+      .location-input .suggestion-item.selected {
+        background-color: #f0f7ff;
+      }
+      
+      .location-input .suggestion-item:last-child {
+        border-bottom: none;
+      }
+      
+      .location-input .highlight {
+        background-color: rgba(58, 123, 213, 0.2);
+        font-weight: bold;
+      }
+      
+      /* Clear button for input */
+      .location-input .clear-input {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #aaa;
+        cursor: pointer;
+        font-size: 14px;
+        display: none;
+        z-index: 2;
+      }
+      
+      .location-input input:not(:placeholder-shown) ~ .clear-input {
+        display: block;
+      }
+      
+      .location-input .clear-input:hover {
+        color: #e74c3c;
+      }
+      
+      /* RTL support for location inputs */
+      .rtl .location-input-wrapper i {
+        left: auto;
+        right: 12px;
+      }
+      
+      .rtl .location-input input {
+        padding: 14px 40px 14px 14px;
+        text-align: right;
+      }
+      
+      .rtl .location-input .clear-input {
+        right: auto;
+        left: 12px;
+      }
+      
+      /* Input animation effects */
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .location-input .suggestions-container.active {
+        animation: slideDown 0.2s ease-out;
+      }
+
+      .option-btn.active {
+        background: #f1c40f !important;
+        color: white !important;
+      }
+
+      /* Language Dropdown Styles */
+      .language-dropdown {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .language-dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        min-width: 120px;
+        padding: 8px 0;
+      }
+
+      .language-dropdown.active .language-dropdown-content {
+        display: block;
+      }
+
+      .language-dropdown-content a {
+        display: block;
+        padding: 8px 16px;
+        color: #333;
+        text-decoration: none;
+        transition: background-color 0.3s;
+      }
+
+      .language-dropdown-content a:hover {
+        background-color: #f5f5f5;
+      }
+
+      /* Updated icon styles */
+      .language-icon {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        filter: none; /* Remove any filters */
+        opacity: 1; /* Ensure full opacity */
+      }
+
+      .language-icon:hover {
+        transform: scale(1.1);
+      }
+
+      /* Adjust icon display for mobile/desktop */
+      @media (max-width: 768px) {
+        .language-icon-desktop {
+          display: none;
+        }
+        
+        .language-icon-mobile {
+          display: block;
+        }
+        
+        .language-dropdown-content {
+          position: static;
+          width: 100%;
+          box-shadow: none;
+          border-top: 1px solid #eee;
+          border-bottom: 1px solid #eee;
+        }
+      }
+
+      @media (min-width: 769px) {
+        .language-icon-desktop {
+          display: block;
+        }
+        
+        .language-icon-mobile {
+          display: none;
+        }
+      }
+
+      /* Dark background adjustments */
+      .nav-menu .language-icon {
+        filter: none; /* Ensure no filters are applied */
+      }
+
+      /* Ensure icon is visible in mobile menu */
+      .nav-menu.active .language-icon {
+        filter: none;
+        opacity: 1;
+      }
+
+      /* Mobile Menu Styles */
+      .hamburger {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        z-index: 1000;
+      }
+
+      .hamburger i {
+        font-size: 24px;
+        color: #333;
+      }
+
+      .hamburger.active i {
+        color: #3a7bd5;
+      }
+
+      @media (max-width: 768px) {
+        .hamburger {
+          display: block;
+        }
+
+        .nav-menu {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 100vw;
+          max-width: 100vw;
+          height: 100vh;
+          background: #000000;
+          padding: 80px 20px 20px;
+          transition: 0.3s ease-in-out;
+          box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+          z-index: 999;
+          overflow-y: auto;
+        }
+
+        .nav-menu.active {
+          right: 0;
+        }
+
+        .nav-menu ul {
+          flex-direction: column;
+          gap: 20px;
+          padding: 0;
+          margin: 0;
+        }
+
+        .nav-menu ul li {
+          width: 100%;
+          text-align: left;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          padding: 10px 0;
+        }
+
+        .nav-menu ul li:last-child {
+          border-bottom: none;
+        }
+
+        .nav-menu ul li a {
+          display: block;
+          padding: 10px 0;
+          font-size: 18px;
+          color: #ffffff;
+          transition: color 0.3s ease;
+          text-decoration: none;
+        }
+
+        .nav-menu ul li a:hover {
+          color: #3a7bd5;
+        }
+
+        /* Mobile Language Section Styles */
+        .language-dropdown {
+          margin-top: 20px;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          padding-top: 20px;
+        }
+
+        .language-icon-mobile,
+        .language-icon-desktop {
+          display: none !important;
+        }
+
+        .language-dropdown::before {
+          content: "Language";
+          display: block;
+          color: #ffffff;
+          font-size: 18px;
+          font-weight: bold;
+          margin-bottom: 15px;
+          padding-left: 10px;
+        }
+
+        .language-dropdown-content {
+          position: static;
+          display: block !important;
+          background: transparent;
+          margin-top: 0;
+          box-shadow: none;
+          opacity: 1;
+          visibility: visible;
+          transform: none;
+        }
+
+        .language-dropdown-content a {
+          padding: 8px 15px;
+          color: #ffffff;
+          opacity: 0.8;
+          transition: opacity 0.3s ease;
+          border-bottom: none;
+        }
+
+        .language-dropdown-content a:hover {
+          background: transparent;
+          opacity: 1;
+          color: #3a7bd5;
+        }
+
+        /* RTL support for mobile menu */
+        .rtl .nav-menu {
+          right: auto;
+          left: -100%;
+        }
+
+        .rtl .nav-menu.active {
+          left: 0;
+          right: auto;
+        }
+
+        .rtl .nav-menu ul li {
+          text-align: right;
+        }
+
+        .rtl .language-dropdown::before {
+          text-align: right;
+          padding-right: 10px;
+          padding-left: 0;
+        }
+
+        .rtl .language-dropdown-content a {
+          text-align: right;
+          padding-right: 15px;
+        }
+      }
+
+      /* Hide mobile icon by default, show desktop icon */
+      .language-icon-mobile {
+        display: none;
+      }
+      .language-icon-desktop {
+        display: inline-block;
+      }
+
+      /* On screens 1024px and below, show mobile icon, hide desktop icon */
+      @media (max-width: 1024px) {
+        .language-icon-mobile {
+          display: inline-block;
+        }
+        .language-icon-desktop {
+          display: none;
+        }
+      }
+
+      /* Slider and Card Styles */
+      .slider-container {
+        position: relative;
+        width: 100%;
+        height: 400px; /* Fixed height for all cards */
+        overflow: hidden;
+        border-radius: 12px;
+        margin-bottom: 20px;
+      }
+
+      .slider {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        height: 100%;
+      }
+
+      .slide {
+        min-width: 100%;
+        position: relative;
+        height: 100%;
+      }
+
+      .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .slide-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        color: white;
+        padding: 20px;
+      }
+
+      .slide-overlay h4 {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+
+      .slide-overlay p {
+        font-size: 1rem;
+        opacity: 0.9;
+      }
+
+      .slider-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.8);
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+          display: flex;
+          align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 2;
+      }
+
+      .slider-nav:hover {
+        background: white;
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      .slider-nav.prev {
+        left: 10px;
+      }
+
+      .slider-nav.next {
+        right: 10px;
+      }
+
+      .slider-dots {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 2;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .dot.active {
+        background: white;
+        transform: scale(1.2);
+      }
+
+      /* Responsive Grid */
+      .tariffs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      @media (min-width: 1024px) {
+        .tariffs-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .slider-container {
+          height: 300px;
+        }
+
+        .slide-overlay h4 {
+          font-size: 1.2rem;
+        }
+
+        .slide-overlay p {
+          font-size: 0.9rem;
+        }
+      }
+
+      /* Card Styles */
+      .tariff-item {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+          height: 100%;
+      }
+
+      .tariff-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      .tariff-header {
+        text-align: center;
+        padding: 25px 20px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-bottom: 1px solid #eee;
+      }
+
+      .tariff-header h3 {
+        margin: 0 0 10px 0;
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .tariff-subtitle {
+        margin: 0;
+        color: #666;
+        font-size: 1rem;
+      }
+
+      .slider-container {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+        margin-bottom: 0;
+      }
+
+      .tariff-info {
+        padding: 25px;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-top: 1px solid #eee;
+        margin-top: auto;
+      }
+
+      .tariff-features {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 20px;
+      }
+
+      .feature {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #555;
+      }
+
+      .feature i {
+        font-size: 1.2rem;
+        color: #3a7bd5;
+      }
+
+      .feature span {
+        font-size: 0.95rem;
+      }
+
+      .cta-button {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+        color: white;
+        text-align: center;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .cta-button:hover {
+        background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+        transform: translateY(-2px);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 1024px) {
+        .slider-container {
+          height: 350px;
+        }
+        
+        .tariff-header {
+          padding: 20px 15px;
+        }
+        
+        .tariff-header h3 {
+          font-size: 1.6rem;
+        }
+        
+        .tariff-info {
+          padding: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .slider-container {
+          height: 300px;
+        }
+        
+        .tariff-features {
+          gap: 20px;
+        }
+        
+        .feature i {
+          font-size: 1.1rem;
+        }
+        
+        .feature span {
+          font-size: 0.9rem;
+        }
+      }
+
+      /* Address Suggestions Styles */
+      .suggestions-container {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+      }
+
+      .suggestion-item {
+        padding: 10px 15px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #eee;
+      }
+
+      .suggestion-item:last-child {
+        border-bottom: none;
+      }
+
+      .suggestion-item:hover,
+      .suggestion-item.selected {
+        background-color: #f0f7ff;
+        color: #3a7bd5;
+      }
+
+      .location-input {
+        position: relative;
+      }
+
+      .location-input input {
+        padding-right: 30px;
+      }
+
+      .location-input i.fa-times {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #999;
+        transition: color 0.2s ease;
+      }
+
+      .location-input i.fa-times:hover {
+        color: #666;
+      }
+
+      /* RTL Support for suggestions */
+      .rtl .suggestions-container {
+        text-align: right;
+      }
+
+      .rtl .location-input input {
+        padding-right: 15px;
+        padding-left: 30px;
+      }
+
+      .rtl .location-input i.fa-times {
+        right: auto;
+        left: 10px;
+      }
+
+      /* Loading indicator */
+      .location-input.loading::after {
+        content: '';
+        position: absolute;
+        right: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 15px;
+        height: 15px;
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #3a7bd5;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: translateY(-50%) rotate(0deg); }
+        100% { transform: translateY(-50%) rotate(360deg); }
+      }
+
+      .rtl .location-input.loading::after {
+        right: auto;
+        left: 40px;
+      }
+
+      /* Calculate Button Styles */
+      .calculate-btn {
+        display: block;
+        width: 100%;
+        padding: 15px 20px;
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 20px;
+      }
+
+      .calculate-btn:hover {
+        background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .calculate-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .calculate-btn.loading {
+        pointer-events: none;
+        opacity: 0.8;
+      }
+
+      .calculate-btn.loading::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s infinite linear;
+      }
+
+      @keyframes spin {
+        to {
+          transform: translateY(-50%) rotate(360deg);
+        }
+      }
+
+      /* Results Modal Enhancements */
+      .results-container {
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
+      }
+
+      .results-container .modal-content {
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .results-container.active .modal-content {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+
+      .results-input {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 1.1rem;
+        color: #495057;
+        font-weight: 600;
+        text-align: center;
+        margin-top: 5px;
+      }
+
+      .results-input:focus {
+        outline: none;
+        border-color: #3a7bd5;
+        box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
+      }
+
+      #estimatedPrice {
+        color: #2ecc71;
+        font-size: 1.4rem;
+        font-weight: bold;
+        background: rgba(46, 204, 113, 0.1);
+        border-color: rgba(46, 204, 113, 0.2);
+      }
+
+      .modal-cta-button {
+        margin-top: 25px;
+        padding: 15px 30px;
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .modal-cta-button:hover {
+        background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      /* RTL Support */
+      .rtl .calculate-btn.loading::after {
+        right: auto;
+        left: 20px;
+      }
+
+      .rtl .results-input {
+        text-align: center;
+      }
+
+      /* Contact form placeholder styles */
+      .contact-form input::placeholder,
+      .contact-form textarea::placeholder {
+        color: black;
+        opacity: 1;
+      }
+
+      .contact-form input:-ms-input-placeholder,
+      .contact-form textarea:-ms-input-placeholder {
+        color: black;
+      }
+
+      .contact-form input::-ms-input-placeholder,
+      .contact-form textarea::-ms-input-placeholder {
+        color: black;
+      }
+
+      .contact-form input,
+      .contact-form textarea {
+        color: black !important;
+      }
+
+      /* Add these styles after the existing styles */
+
+      /* Mobile-specific card styles */
+      @media (max-width: 768px) {
+        .tariff-item {
+          width: 100%;
+          margin-bottom: 2rem;
+        }
+
+        .slider-container {
+          height: 250px !important; /* Force consistent height */
+          width: 100%;
+          overflow: hidden;
+        }
+
+        .slider {
+          height: 100%;
+        }
+
+        .slide {
+          height: 100%;
+        }
+
+        .slide img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .tariff-header h3 {
+          font-size: 1.5rem;
+          padding: 15px;
+          margin: 0;
+        }
+
+        .tariff-info {
+          padding: 15px;
+        }
+
+        .tariff-features {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          margin-bottom: 15px;
+        }
+
+        .cta-button {
+          width: 100%;
+          padding: 12px;
+          font-size: 1rem;
+        }
+
+        /* Make all cards in the grid have consistent width */
+        .tariffs-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 2rem;
+          padding: 1rem;
+        }
+
+        /* Ensure consistent slide overlay styling */
+        .slide-overlay {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: rgba(0, 0, 0, 0.6);
+          color: white;
+          padding: 15px;
+        }
+
+        .slide-overlay h4 {
+          font-size: 1.2rem;
+          margin-bottom: 5px;
+        }
+
+        .slide-overlay p {
+          font-size: 0.9rem;
+          margin: 0;
+        }
+      }
+
+      /* Add these styles for the language icon */
+      .language-icon {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        filter: brightness(0) invert(0); /* Remove any filters that might make it white */
+        transition: transform 0.3s ease;
+      }
+
+      .language-icon:hover {
+        transform: scale(1.1);
+      }
+
+      /* Specific styles for mobile and desktop versions */
+      .language-icon-desktop {
+        display: none;
+      }
+
+      .language-icon-mobile {
+        display: block;
+      }
+
+      @media (min-width: 768px) {
+        .language-icon-desktop {
+          display: block;
+        }
+        
+        .language-icon-mobile {
+          display: none;
+        }
+      }
+
+      /* Dark mode or when header is transparent */
+      .transparent-header .language-icon {
+        filter: brightness(0) invert(1); /* Only invert for transparent header */
+      }
+    </style>
+    <script>
+      // Smooth scroll to contact section
+      function scrollToContact(event) {
+        event.preventDefault();
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+          contactSection.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+          
+          // Focus on the name input field after scrolling
+          setTimeout(() => {
+            const nameInput = document.getElementById('nom');
+            if (nameInput) {
+              nameInput.focus();
+            }
+          }, 1000); // Wait for scroll to complete
+        }
+      }
+
+      // Mobile Menu Functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        const navLinks = document.querySelectorAll('.nav-menu a');
+        const languageDropdown = document.querySelector('.language-dropdown');
+        const languageLinks = document.querySelectorAll('.language-dropdown-content a');
+        const menuOverlay = document.querySelector('.menu-overlay');
+        const isMobile = window.innerWidth <= 768;
+
+        // Toggle menu when hamburger is clicked
+        hamburger.addEventListener('click', function() {
+          hamburger.classList.toggle('active');
+          navMenu.classList.toggle('active');
+          menuOverlay.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        navLinks.forEach(link => {
+          if (!link.closest('.language-dropdown')) {
+            link.addEventListener('click', () => {
+              closeMenu();
+            });
+          }
+        });
+
+        // Close menu when clicking overlay
+        menuOverlay.addEventListener('click', closeMenu);
+
+        // Function to close menu
+        function closeMenu() {
+          hamburger.classList.remove('active');
+          navMenu.classList.remove('active');
+          menuOverlay.classList.remove('active');
+          if (!isMobile) {
+            languageDropdown.classList.remove('active');
+          }
+        }
+
+        // Desktop language dropdown functionality
+        if (!isMobile) {
+          const languageIcons = document.querySelectorAll('.language-icon');
+          
+        languageIcons.forEach(icon => {
+          icon.addEventListener('click', function(e) {
+              e.preventDefault();
+            e.stopPropagation();
+              languageDropdown.classList.toggle('active');
+          });
+        });
+
+          // Close desktop dropdown when clicking outside
+          document.addEventListener('click', function(e) {
+            if (!languageDropdown.contains(e.target)) {
+            languageDropdown.classList.remove('active');
+          }
+        });
+
+          // Prevent closing when clicking inside dropdown
+          languageDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+          });
+          }
+
+        // Handle language selection
+        languageLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const lang = this.textContent.toLowerCase().trim();
+            const langMap = { arabic: "ar", english: "en", french: "fr" };
+            
+            if (langMap[lang]) {
+              changeLanguage(langMap[lang]);
+              if (!isMobile) {
+              languageDropdown.classList.remove('active');
+              }
+              closeMenu();
+            }
+          });
+        });
+
+        // Update mobile/desktop state on resize
+        window.addEventListener('resize', function() {
+          const newIsMobile = window.innerWidth <= 768;
+          if (newIsMobile !== isMobile) {
+            location.reload();
+          }
+        });
+      });
+    </script>
+    <script>
+      // Language Dropdown Functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const languageDropdown = document.querySelector('.language-dropdown');
+        const languageIcons = document.querySelectorAll('.language-icon');
+        const languageLinks = document.querySelectorAll('.language-dropdown-content a');
+        let isDropdownOpen = false;
+
+        // Toggle dropdown when clicking the icon
+        languageIcons.forEach(icon => {
+          icon.addEventListener('click', function(e) {
+          e.stopPropagation();
+            isDropdownOpen = !isDropdownOpen;
+            languageDropdown.classList.toggle('active', isDropdownOpen);
+          });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!languageDropdown.contains(e.target)) {
+            isDropdownOpen = false;
+            languageDropdown.classList.remove('active');
+          }
+        });
+
+        // Prevent dropdown from closing when clicking inside
+        languageDropdown.querySelector('.language-dropdown-content').addEventListener('click', function(e) {
+          e.stopPropagation();
+        });
+
+        // Handle language selection
+        languageLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const lang = this.textContent.toLowerCase().trim();
+            const langMap = { arabic: "ar", english: "en", french: "fr" };
+            
+            if (langMap[lang]) {
+              changeLanguage(langMap[lang]);
+              isDropdownOpen = false;
+              languageDropdown.classList.remove('active');
+            }
+          });
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <!-- Add menu overlay -->
+    <div class="menu-overlay"></div>
+    <header>
+      <div class="logo">
+        <h1>inayatransports.fr</h1>
+        <p class="logo-subtitle">Votre chauffeur sur inayatransports</p>
+      </div>
+      <button class="hamburger" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav class="nav-menu">
+        <ul>
+          <li><a href="#accueil">Accueil</a></li>
+          <li><a href="#services">Nos Services</a></li>
+          <li><a href="#tarifs">Nos Tarifs</a></li>
+          <li><a href="#contact">Contactez-Nous</a></li>
+          <li class="language-dropdown">
+            <!-- Desktop icon -->
+            <img src="assets/images/lang/earth.png" alt="Language Icon" class="language-icon language-icon-desktop" />
+
+            <!-- Mobile icon -->
+            <img src="assets/images/lang/earth.png" alt="Language Icon" class="language-icon language-icon-mobile" />
+            
+            <div class="language-dropdown-content">
+              <a href="#">Arabic</a>
+              <a href="#">English</a>
+              <a href="#">French</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <div id="devis-container"></div>
+<!--Deeeeeeeeviiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii-->
+<main id="accueil">
+    <div class="reservation-form">
+      <h2 id="devis-heading">Faire Un Devis</h2>
+      <script>  
+    </script>
+      <div class="vehicle-options">
+        <button class="vehicle-btn" data-vehicle="premium">
+          <img src="assets/images/berline.png" alt="Premium" class="vehicle-img" />
+        </button>
+        <button class="vehicle-btn" data-vehicle="eco">
+          <img src="assets/images/hybrid.png" alt="Eco" class="vehicle-img" />
+        </button>
+        <button class="vehicle-btn" data-vehicle="van">
+          <img src="assets/images/van.png" alt="Van" class="vehicle-img" />
+        </button>
+      </div>
+      
+  
+      <form>
+        <!-- Hidden input for vehicle type -->
+        <input type="hidden" id="vehicle-type" value="eco">
+        
+        <!-- Location Fields -->
+        <div class="form-row">
+          <div class="location-input">
+            <label for="depart" class="form-label">Départ</label>
+            <div class="location-input-wrapper">
+              <input
+                type="text"
+                id="depart"
+                placeholder="Entrez une adresse"
+                required
+                autocomplete="off"
+              />
+              <i class="fas fa-map-marker-alt"></i>
+              <div
+                class="suggestions-container"
+                id="depart-suggestions-container"
+              ></div>
+            </div>
+          </div>
+  
+          <div class="location-input">
+            <label for="arrivee" class="form-label">Arrivée</label>
+            <div class="location-input-wrapper">
+              <input
+                type="text"
+                id="arrivee"
+                placeholder="Entrez une adresse"
+                required
+                autocomplete="off"
+              />
+              <i class="fas fa-map-marker-alt"></i>
+              <div
+                class="suggestions-container"
+                id="arrivee-suggestions-container"
+              ></div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Date & Time -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" id="date" required />
+          </div>
+          <div class="form-group">
+            <label for="heure" class="form-label">Heure</label>
+            <input type="time" id="heure" required />
+          </div>
+        </div>
+  
+        <!-- Options -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="options-label form-label">Options supplémentaires</label>
+            <div class="options-container flex justify-center mt-4">
+              <button
+                type="button"
+                class="option-btn mx-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-5 rounded shadow"
+                data-option="baby"
+                aria-label="Baby Seat"
+              >
+                <img
+                  src="assets/images/supp/siege_bebe.png"
+                  alt="Baby Seat"
+                  class="w-8 h-8"
+                />
+              </button>
+              <button
+                type="button"
+                class="option-btn mx-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-5 rounded shadow"
+                data-option="booster"
+                aria-label="Booster Seat"
+              >
+                <img
+                  src="assets/images/supp/rehausseur.png"
+                  alt="Booster Seat"
+                  class="w-8 h-8"
+                />
+              </button>
+              <button
+                type="button"
+                class="option-btn mx-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-5 rounded shadow"
+                data-option="none"
+                aria-label="No Extras"
+              >
+                <i class="fas fa-ban fa-lg"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+  
+        <button type="submit" class="calculate-btn">Calculer</button>
+      </form>
+    </div>
+  
+    <!-- Hero Text -->
+    <div class="hero-text">
+      <h2>Chauffeur 24/24 sur l'île de France</h2>
+      <p>Votre chauffeur pour vos transferts sur inayatransports.fr</p>
+    </div>
+  </main>
+     <script src="devis.js"></script>
+
+<!--Deeeeeeeeviiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii-->
+
+    <section class="call-to-action">
+      <div class="cta-content">
+        <div class="phone-number">
+          <span class="phone-icon"><i class="fas fa-phone"></i></span>
+          <a href="tel:+33695608776">+33 6 95 60 87 76</a>
+        </div>
+        <a href="#tarifs" class="cta-btn">Nos Tarifs</a>
+      </div>
+    </section>
+
+    <section class="services" id="services">
+      <h2>Bienvenue sur notre site<br />Nos Services</h2>
+      <div class="services-grid">
+        <div class="service-item">
+          <img
+            src="assets/route.png"
+            alt="Itinéraire Libre Icon"
+            class="icon"
+          />
+          <h3>Itinéraire Libre</h3>
+          <p>
+            Profitez du confort de nos véhicules pour tous vos trajets
+            personnels, que vous soyez particulier ou professionnel.
+          </p>
+        </div>
+        <div class="service-item">
+          <img
+            src="assets/chauffeur.png"
+            alt="Mise à Disposition Icon"
+            class="icon"
+          />
+          <h3>Mise à Disposition</h3>
+          <p>
+            Nos chauffeurs s'adaptent à vos besoins avec un service de location
+            de voiture avec chauffeur sur mesure.
+          </p>
+        </div>
+        <div class="service-item">
+          <img
+            src="assets/avion.png"
+            alt="Navette Aéroport Icon"
+            class="icon"
+          />
+          <h3>Navette Aéroport</h3>
+          <p>
+            Réservez facilement votre navette pour vos trajets de ou vers
+            l'aéroport de Nice en quelques clics.
+          </p>
+        </div>
+        <div class="service-item">
+          <img src="assets/a-venir.png" alt="Événementiel Icon" class="icon" />
+          <h3>Événementiel</h3>
+          <p>
+            Transport sur mesure pour vos évènements, en toute sécurité, vers le
+            lieu de vos festivités.
+          </p>
+        </div>
+      </div>
+    </section>
+<!-- import here the tarifs.html with fetch js-->
+
+<section class="tariffs" id="tarifs">
+  <h2 class="text-center text-3xl font-bold mb-8">
+    Des véhicules tout confort<br />Nos Services
+  </h2>
+  <div class="tariffs-grid">
+    <!-- Premium Card -->
+    <div class="tariff-item">
+      <div class="tariff-header">
+        <h3>Premium</h3>
+      </div>
+      <div class="slider-container">
+        <div class="slider" id="premium-slider">
+          <div class="slide">
+            <img src="assets/images/cars/Premium.jpg" alt="Premium Vehicle" loading="lazy">
+            <div class="slide-overlay">
+              <h4 class="premium-title">Le luxe à son meilleur</h4>
+              <p class="premium-desc">Idéal pour les voyages d'affaires et les occasions spéciales</p>
+            </div>
+          </div>
+        </div>
+        <button class="slider-nav prev" onclick="changeSlide(-1, 'premium')">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="slider-nav next" onclick="changeSlide(1, 'premium')">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="slider-dots" id="premium-dots">
+          <span class="dot active" onclick="jumpToSlide(0, 'premium')"></span>
+        </div>
+        <div class="pop-out-trigger" onclick="openPopOut('premium')">
+          <i class="fas fa-expand"></i>
+        </div>
+      </div>
+      <div class="tariff-info">
+        <div class="tariff-features">
+        
+        </div>
+        <a href="#contact" class="cta-button" onclick="scrollToContact(event)">Réserver</a>
+      </div>
+    </div>
+
+    <!-- Eco Card -->
+    <div class="tariff-item">
+      <div class="tariff-header">
+        <h3>Eco</h3>
+      </div>
+      <div class="slider-container">
+        <div class="slider" id="eco-slider">
+          <div class="slide">
+            <img src="assets/images/cars/Eco.jpg" alt="Eco Vehicle" loading="lazy">
+            <div class="slide-overlay">
+              <h4>Efficient and Comfortable</h4>
+              <p>Perfect balance of comfort and economy</p>
+            </div>
+          </div>
+        </div>
+        <button class="slider-nav prev" onclick="changeSlide(-1, 'eco')">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="slider-nav next" onclick="changeSlide(1, 'eco')">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="slider-dots" id="eco-dots">
+          <span class="dot active" onclick="jumpToSlide(0, 'eco')"></span>
+        </div>
+        <div class="pop-out-trigger" onclick="openPopOut('eco')">
+          <i class="fas fa-expand"></i>
+        </div>
+      </div>
+      <div class="tariff-info">
+        <div class="tariff-features">
+          
+        </div>
+        <a href="#contact" class="cta-button" onclick="scrollToContact(event)">Réserver</a>
+      </div>
+    </div>
+
+    <!-- Van Card -->
+    <div class="tariff-item">
+      <div class="tariff-header">
+        <h3>Van</h3>
+      </div>
+      <div class="slider-container">
+        <div class="slider" id="van-slider">
+          <div class="slide">
+            <img src="assets/images/cars/van.jpg" alt="Van 1" loading="lazy">
+            <div class="slide-overlay">
+              <h4>Spacious and Comfortable</h4>
+              <p>Ideal for groups and families</p>
+            </div>
+          </div>
+          <div class="slide">
+            <img src="assets/images/cars/van1.jpg" alt="Van 2" loading="lazy">
+            <div class="slide-overlay">
+              <h4>Luxurious Interior</h4>
+              <p>Space and comfort for all your trips</p>
+            </div>
+          </div>
+          <div class="slide">
+            <img src="assets/images/cars/van2.jpg" alt="Van 3" loading="lazy">
+            <div class="slide-overlay">
+              <h4>Elegance and Practicality</h4>
+              <p>Group transport in elegance</p>
+            </div>
+          </div>
+          <div class="slide">
+            <img src="assets/images/cars/van3.jpg" alt="Van 4" loading="lazy">
+            <div class="slide-overlay">
+              <h4>Modern Design</h4>
+              <p>The perfect solution for your group travel</p>
+            </div>
+          </div>
+          <div class="slide">
+            <img src="assets/images/cars/van4.jpg" alt="Van 5" loading="lazy">
+            <div class="slide-overlay">
+              <h4>Optimal Comfort</h4>
+              <p>For pleasant group trips</p>
+            </div>
+          </div>
+        </div>
+        <button class="slider-nav prev" onclick="changeSlide(-1, 'van')">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="slider-nav next" onclick="changeSlide(1, 'van')">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="slider-dots" id="van-dots">
+          <span class="dot active" onclick="jumpToSlide(0, 'van')"></span>
+          <span class="dot" onclick="jumpToSlide(1, 'van')"></span>
+          <span class="dot" onclick="jumpToSlide(2, 'van')"></span>
+          <span class="dot" onclick="jumpToSlide(3, 'van')"></span>
+          <span class="dot" onclick="jumpToSlide(4, 'van')"></span>
+        </div>
+        <div class="pop-out-trigger" onclick="openPopOut('van')">
+          <i class="fas fa-expand"></i>
+        </div>
+      </div>
+      <div class="tariff-info">
+        <a href="#contact" class="cta-button" onclick="scrollToContact(event)">Réserver</a>
+      </div>
+    </div>
+  </div>
+</section>
+    
+
+    <!-- Pop-out Cards for Sliders -->
+    <div class="overlay-bg" id="overlay-bg"></div>
+
+    <div class="pop-out-card" id="premium-pop-out">
+      <div class="pop-out-header">
+        <h3>Premium</h3>
+        <button class="pop-out-close" onclick="closePopOut()">×</button>
+      </div>
+      <div class="pop-out-slider-container">
+        <div class="pop-out-slider" id="premium-pop-out-slider">
+          <div class="pop-out-slide">
+            <img src="assets/images/cars/Premium.jpg" alt="Premium" />
+          </div>
+        </div>
+      </div>
+      <div class="pop-out-navigation">
+        <button
+          class="pop-out-nav-btn prev"
+          onclick="changePopOutSlide(-1, 'premium')"
+        >
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="pop-out-indicators" id="premium-pop-out-indicators">
+          <span
+            class="pop-out-indicator active"
+            onclick="jumpToPopOutSlide(0, 'premium')"
+          ></span>
+        </div>
+        <button
+          class="pop-out-nav-btn next"
+          onclick="changePopOutSlide(1, 'premium')"
+        >
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        <button class="pop-out-nav-btn" onclick="closePopOut()">
+          <i class="fas fa-arrow-left"></i> Retour
+        </button>
+      </div>
+    </div>
+
+    <div class="pop-out-card" id="van-pop-out">
+      <div class="pop-out-header">
+        <h3>Van</h3>
+        <button class="pop-out-close" onclick="closePopOut()">×</button>
+      </div>
+      <div class="pop-out-slider-container">
+        <div class="pop-out-slider" id="van-pop-out-slider">
+          <div class="pop-out-slide">
+            <img src="assets/images/cars/van.jpg" alt="Van 1" loading="lazy">
+          </div>
+          <div class="pop-out-slide">
+            <img src="assets/images/cars/van1.jpg" alt="Van 2" loading="lazy">
+          </div>
+          <div class="pop-out-slide">
+            <img src="assets/images/cars/van2.jpg" alt="Van 3" loading="lazy">
+          </div>
+          <div class="pop-out-slide">
+            <img src="assets/images/cars/van3.jpg" alt="Van 4" loading="lazy">
+          </div>
+          <div class="pop-out-slide">
+            <img src="assets/images/cars/van4.jpg" alt="Van 5" loading="lazy">
+          </div>
+        </div>
+      </div>
+      <div class="pop-out-navigation">
+        <button class="pop-out-nav-btn prev" onclick="changeSlide(-1, 'van', true)">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="pop-out-indicators" id="van-pop-out-dots">
+          <span class="dot active" onclick="jumpToSlide(0, 'van', true)"></span>
+          <span class="dot" onclick="jumpToSlide(1, 'van', true)"></span>
+          <span class="dot" onclick="jumpToSlide(2, 'van', true)"></span>
+          <span class="dot" onclick="jumpToSlide(3, 'van', true)"></span>
+          <span class="dot" onclick="jumpToSlide(4, 'van', true)"></span>
+        </div>
+        <button class="pop-out-nav-btn next" onclick="changeSlide(1, 'van', true)">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="pop-out-card" id="eco-pop-out">
+      <div class="pop-out-header">
+        <h3>Eco</h3>
+        <button class="pop-out-close" onclick="closePopOut()">×</button>
+      </div>
+      <div class="pop-out-slider-container">
+        <div class="pop-out-slider" id="eco-pop-out-slider">
+          <div class="pop-out-slide">
+            <img src="assets/images/cars/Eco.jpg" alt="Eco" />
+          </div>
+        </div>
+      </div>
+      <div class="pop-out-navigation">
+        <button
+          class="pop-out-nav-btn prev"
+          onclick="changePopOutSlide(-1, 'eco')"
+        >
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="pop-out-indicators" id="eco-pop-out-indicators">
+          <span
+            class="pop-out-indicator active"
+            onclick="jumpToPopOutSlide(0, 'eco')"
+          ></span>
+        </div>
+        <button
+          class="pop-out-nav-btn next"
+          onclick="changePopOutSlide(1, 'eco')"
+        >
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        <button class="pop-out-nav-btn" onclick="closePopOut()">
+          <i class="fas fa-arrow-left"></i> Retour
+        </button>
+      </div>
+    </div>
+
+    <section id="contact" class="contact-section">
+      <div class="contact-container">
+        <h2 class="contact-heading">Contactez-Nous</h2>
+        <form action="https://formspree.io/f/mbloqrok" method="POST" class="contact-form">
+          <div class="form-group">
+            <div class="input-icon-wrapper">
+              <i class="fas fa-user input-icon"></i>
+              <input type="text" id="nom" name="nom" class="contact-name" required placeholder="Votre nom" />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-icon-wrapper">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="email" name="email" class="contact-email" required placeholder="Votre email" />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-icon-wrapper">
+              <i class="fas fa-phone input-icon"></i>
+              <input type="tel" id="phone" name="phone" class="contact-phone" required placeholder="Votre téléphone" />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-icon-wrapper textarea-wrapper">
+              <i class="fas fa-comment input-icon"></i>
+              <textarea id="message" name="message" class="contact-message" required placeholder="Votre message"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="contact-submit contact-btn">
+            <i class="fas fa-paper-plane"></i> <span>Envoyer</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Results Modal -->
+    <div class="results-container">
+      <div class="results-modal">
+        <div class="modal-content">
+          <span class="close-modal">&times;</span>
+          <h3>Résultats de Votre Estimation</h3>
+          <div class="modal-success-message">
+            <i class="fas fa-check-circle"></i> Calcul effectué avec succès ! Voici les détails de votre trajet.
+          </div>
+          <div class="form-group">
+            <label for="distance">Distance de trajet</label>
+            <input type="text" id="distance" readonly>
+          </div>
+          <div class="form-group">
+            <label for="duration">Durée estimée</label>
+            <input type="text" id="duration" readonly>
+          </div>
+          <div class="form-group">
+            <label for="estimatedPrice">Prix estimé</label>
+            <input type="text" id="estimatedPrice" readonly>
+          </div>
+          <div class="modal-cta">
+            <a href="#contact" class="modal-cta-button">
+              <i class="fas fa-paper-plane"></i> Réserver maintenant
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-section">
+        <h3>inayatransports.fr</h3>
+        <p>
+          inayatransports.fr est à votre disposition 24h/24 et 7j/7 pour vous
+          transporter vers la destination de votre choix. Réservez rapidement en
+          quelques clics.
+        </p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h3>Plan du site</h3>
+        <a href="#contact">Contact</a>
+        <a href="#accueil">Devis</a>
+        <a href="#">Mentions légales</a>
+      </div>
+
+      <div class="footer-section">
+        <h3 class="contact-footer-heading">Contactez-nous</h3>
+        <a href="tel:+33988384856">+33 6 95 60 87 76</a>
+        <a href="mailto:Its95@outlook.fr">Its95@outlook.fr</a>
+      </div>
+
+      <div class="footer-bottom">
+        <p>inayatransports.fr 2021 © Tous droits réservés, une création VTC</p>
+      </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script>
+      // Enhanced slider functionality
+      const sliders = {
+        premium: {
+          currentIndex: 0,
+          maxIndex: 0, // Only 1 image
+          element: null,
+          indicators: [],
+        },
+        van: {
+          currentIndex: 0,
+          maxIndex: 4, // 5 images (0-4)
+          element: null,
+          indicators: [],
+        },
+        eco: {
+          currentIndex: 0,
+          maxIndex: 0, // Only 1 image
+          element: null,
+          indicators: [],
+        },
+      };
+
+      // Initialize sliders when DOM is loaded
+      document.addEventListener("DOMContentLoaded", function () {
+        sliders.premium.element = document.querySelector("#premium-slider");
+        sliders.van.element = document.querySelector("#van-slider");
+        sliders.eco.element = document.querySelector("#eco-slider");
+
+        // Get indicators
+        sliders.premium.indicators = document.querySelectorAll(
+          "#premium-indicators .indicator"
+        );
+        sliders.van.indicators = document.querySelectorAll(
+          "#van-indicators .indicator"
+        );
+        sliders.eco.indicators = document.querySelectorAll(
+          "#eco-indicators .indicator"
+        );
+
+
+        // Auto-play for van slider
+        setInterval(() => {
+          if (!document.hidden) {
+            // Only auto-play if page is visible
+            changeSlide(1, "van");
+          }
+        }, 5000); // Change slide every 5 seconds
+        
+        // Enhanced modal handling
+        const closeModal = document.querySelector('.close-modal');
+        const resultsContainer = document.querySelector('.results-container');
+        const modalContent = document.querySelector('.modal-content');
+        
+        // Function to close the results modal with animation
+        function closeResultsModal() {
+          if (resultsContainer) {
+            modalContent.style.transform = 'rotateX(15deg) translateY(50px)';
+            modalContent.style.opacity = '0';
+            
+            setTimeout(() => {
+              resultsContainer.classList.remove('active');
+              // Reset modal content styles
+              modalContent.style.transform = '';
+              modalContent.style.opacity = '';
+            }, 300);
+          }
+        }
+        
+        // Function to open the results modal with animation
+        function openResultsModal() {
+          if (resultsContainer) {
+            resultsContainer.classList.add('active');
+            
+            setTimeout(() => {
+              modalContent.style.transform = 'rotateX(0) translateY(0)';
+              modalContent.style.opacity = '1';
+              
+              // Reset and restart map car animation
+              const mapCarElement = document.querySelector('.map-car');
+              if (mapCarElement) {
+                mapCarElement.style.animation = 'none';
+                // Force reflow to restart animation
+                void mapCarElement.offsetWidth;
+                mapCarElement.style.animation = 'mapCarDrive 4s infinite linear';
+              }
+            }, 50);
+          }
+        }
+
+       
+        
+        // Handle calculate button click
+        const calculateBtn = document.querySelector('.calculate-btn');
+        if (calculateBtn) {
+          calculateBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            // Open the results modal
+            openResultsModal();
+          });
+        }
+        
+        // Handle vehicle button selection
+        const vehicleBtns = document.querySelectorAll('.vehicle-btn');
+        vehicleBtns.forEach(btn => {
+          btn.addEventListener('click', function() {
+            // Remove active class from all buttons
+            vehicleBtns.forEach(b => b.classList.remove('active'));
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Update hidden input with vehicle type
+            document.getElementById('vehicle-type').value = this.getAttribute('data-vehicle');
+          });
+        });
+      });
+
+    </script>
+   
+    
+    <script>
+      // Language translations
+      const translations = {
+        fr: {
+          please_select_addresses: "Veuillez sélectionner des adresses dans les suggestions",
+          calculation_error: "Erreur lors du calcul de l'itinéraire. Veuillez réessayer.",
+          accueil: "Accueil",
+          services: "Nos Services",
+          tarifs: "Nos Services",
+          contact: "Contactez-Nous",
+          devis: "Faire Un Devis",
+          devis_title: "Faire Un Devis",
+          depart: "Départ",
+          arrivee: "Arrivée",
+          date: "Date",
+          heure: "Heure",
+          options: "Options supplémentaires",
+          calculer: "Calculer",
+          distance: "Distance",
+          duree: "Durée estimée",
+          reserver: "Réserver Maintenant",
+          hero_title: "Chauffeur 24/24 sur l île de France",
+          hero_subtitle:
+            "Votre chauffeur pour vos transferts sur inayatransports.fr",
+          bienvenue: "Bienvenue sur notre site<br />Nos Services",
+          itineraire: "Itinéraire Libre",
+          itineraire_desc:
+            "Profitez du confort de nos véhicules pour tous vos trajets personnels, que vous soyez particulier ou professionnel.",
+          disposition: "Mise à Disposition",
+          disposition_desc:
+            "Nos chauffeurs s'adaptent à vos besoins avec un service de location de voiture avec chauffeur sur mesure.",
+          navette: "Navette Aéroport",
+          navette_desc:
+            "Réservez facilement votre navette pour vos trajets de ou Vers les aéroports d'île de France.",
+          evenementiel: "Événementiel",
+          evenementiel_desc:
+            "Transport sur mesure pour vos évènements, en toute sécurité, vers le lieu de vos festivités.",
+          vehicles_title: "Des véhicules tout confort<br />Nos Services",
+          berline_title: "Premium",
+          van_title: "Van",
+          slide_luxury: "Luxury at its finest",
+          slide_business: "Perfect for business trips and special occasions",
+          slide_spacieux: "Spacieux et confortable",
+          slide_ideal: "Idéal pour les groupes et les familles",
+          slide_interieur: "Intérieur luxueux",
+          slide_espace: "Espace et confort pour tous vos déplacements",
+          slide_elegance: "Élégance et praticité",
+          slide_transport: "Transports de groupe en toute élégance",
+          slide_design: "Design moderne",
+          slide_solution:
+            "La solution parfaite pour vos déplacements en groupe",
+          slide_confort: "Confort optimal",
+          slide_trajet: "Pour des trajets agréables en groupe",
+          btn_reserver: "Réserver",
+          retour: "Retour",
+          contact_title: "Contactez-Nous",
+          envoyer: "Envoyer",
+          telephone: "Téléphone :",
+          email_contact: "Email :",
+          footer_desc:
+            "inayatransports.fr est à votre disposition 24h/24 et 7j/7 pour vous transporter vers la destination de votre choix. Réservez rapidement en quelques clics.",
+          plan_site: "Plan du site",
+          contact_footer: "Contact",
+          devis_footer: "Devis",
+          mentions: "Mentions légales",
+          contactez: "Contactez-nous",
+          copyright:
+            "inayatransports.fr 2021 © Tous droits réservés. ",
+          cities_alert:
+            "Veuillez entrer des villes valides parmi : Paris, Marseille, Lyon, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille",
+          placeholder_adresse: "Entrez une adresse",
+          placeholder_nom: "Votre nom",
+          placeholder_email: "Votre email",
+          placeholder_message: "Votre message",
+          premium: "Premium",
+          eco: "ECO",
+          van: "VAN",
+          logo_subtitle: "Votre chauffeur sur inayatransports",
+          error_both_cities:
+            "Les villes de départ et d'arrivée ne sont pas reconnues. Veuillez entrer des villes valides.",
+          error_departure_city:
+            "La ville de départ n'est pas reconnue. Veuillez entrer une ville valide.",
+          error_arrival_city:
+            "La ville d'arrivée n'est pas reconnue. Veuillez entrer une ville valide.",
+          modal_success: "Calcul effectué avec succès ! Voici les détails de votre trajet.",
+          modal_results_title: "Résultats de Votre Estimation",
+          modal_price_label: "Prix estimé",
+          modal_distance_label: "Distance de trajet",
+          modal_duration_label: "Durée estimée",
+          modal_book_now: "Réserver maintenant",
+          efficient_comfortable: "Efficient and Comfortable",
+          perfect_balance: "Perfect balance of comfort and economy",
+          efficient_comfortable: "Efficacité et confort",
+          perfect_balance: "Équilibre parfait entre confort et économie",
+          eco_title: "Éco",
+          cta_rates: "Nos Tarifs",
+          baby_seat: "Siège Bébé",
+          booster_seat: "Réhausseur",
+          no_extras: "Aucune option",
+          devis_title: "Faire Un Devis",
+          calculate_btn: "CALCULER",
+          contact_us_title: "Contactez-Nous",
+          form_name: "Votre nom",
+          form_email: "Votre email",
+          form_phone: "Votre téléphone",
+          form_message: "Votre message",
+          form_submit: "Envoyer",
+          contact_footer_title: "Contactez-nous",
+          contact_heading: "Contactez-Nous",
+          contact_footer: "Contactez-nous",
+          devis_heading: "Faire Un Devis",
+          form_depart: "Départ",
+          form_arrivee: "Arrivée",
+          form_date: "Date",
+          form_heure: "Heure",
+          form_options: "Options supplémentaires",
+          premium_title: "Le luxe à son meilleur",
+          premium_desc: "Idéal pour les voyages d'affaires et les occasions spéciales",
+          name_placeholder: "Votre nom",
+          email_placeholder: "Votre email",
+          phone_placeholder: "Votre téléphone",
+          message_placeholder: "Votre message",
+          submit_button: "Envoyer",
+          contact_name: "Votre nom",
+          contact_email: "Votre email",
+          contact_phone: "Votre téléphone",
+          contact_message: "Votre message",
+          contact_submit: "Envoyer",
+        },
+        en: {
+          please_select_addresses: "Please select addresses from the suggestions",
+          calculation_error: "Error calculating route. Please try again.",
+          accueil: "Home",
+          services: "Our Services",
+          tarifs: "Our Services",
+          contact: "Contact Us",
+          devis: "Get a Quote",
+          devis_title: "Get a Quote",
+          depart: "Departure",
+          arrivee: "Arrival",
+          date: "Date",
+          heure: "Time",
+          options: "Additional options",
+          calculer: "Calculate",
+          distance: "Distance",
+          duree: "Estimated duration",
+          reserver: "Book Now",
+          hero_title: "24/7 Driver in Île-de-France",
+          hero_subtitle: "Your driver for all transfers on inayatransports.fr",
+          bienvenue: "Welcome to our website<br />Our Services",
+          itineraire: "Free Itinerary",
+          itineraire_desc:
+            "Enjoy the comfort of our vehicles for all your personal trips, whether you are a private individual or a professional.",
+          disposition: "At Your Disposal",
+          disposition_desc:
+            "Our drivers adapt to your needs with a tailor-made car rental service with driver.",
+          navette: "Airport Shuttle",
+          navette_desc:
+            "Easily book your shuttle for your trips to or from Nice airport in just a few clicks.",
+          evenementiel: "Events",
+          evenementiel_desc:
+            "Tailor-made transport for your events, in complete safety, to the location of your festivities.",
+          vehicles_title: "Comfortable vehicles<br />Our Services",
+          berline_title: "Premium",
+          van_title: "Van",
+          slide_luxury: "Luxury at its finest",
+          slide_business: "Perfect for business trips and special occasions",
+          slide_spacieux: "Spacious and comfortable",
+          slide_ideal: "Ideal for groups and families",
+          slide_interieur: "Luxurious interior",
+          slide_espace: "Space and comfort for all your trips",
+          slide_elegance: "Elegance and practicality",
+          slide_transport: "Group transport in elegance",
+          slide_design: "Modern design",
+          slide_solution: "The perfect solution for your group travel",
+          slide_confort: "Optimal comfort",
+          slide_trajet: "For pleasant group trips",
+          btn_reserver: "Book",
+          retour: "Back",
+          contact_title: "Contact Us",
+          envoyer: "Send",
+          telephone: "Phone:",
+          email_contact: "Email:",
+          footer_desc:
+            "inayatransports.fr is at your disposal 24/7 to transport you to the destination of your choice. Book quickly in just a few clicks.",
+          plan_site: "Site map",
+          contact_footer: "Contact",
+          devis_footer: "Quote",
+          mentions: "Legal notices",
+          contactez: "Contact us",
+          copyright:
+            "inayatransports.fr 2021 © All rights reserved.",
+          cities_alert:
+            "Please enter valid cities among: Paris, Marseille, Lyon, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille",
+          placeholder_adresse: "Enter an address",
+          placeholder_nom: "Your name",
+          placeholder_email: "Your email",
+          placeholder_message: "Your message",
+          premium: "Premium",
+          eco: "ECO",
+          van: "VAN",
+          logo_subtitle: "Your driver on inayatransports",
+          error_both_cities:
+            "Both departure and arrival cities are not recognized. Please enter valid cities.",
+          error_departure_city:
+            "The departure city is not recognized. Please enter a valid city.",
+          error_arrival_city:
+            "The arrival city is not recognized. Please enter a valid city.",
+          modal_success: "Calculation completed successfully! Here are your journey details.",
+          modal_results_title: "Your Quote Results",
+          modal_price_label: "Estimated Price",
+          modal_distance_label: "Journey Distance",
+          modal_duration_label: "Estimated Duration",
+          modal_book_now: "Book Now",
+          efficient_comfortable: "Efficient and Comfortable",
+          perfect_balance: "Perfect balance of comfort and economy",
+          eco_title: "Eco",
+          cta_rates: "Our Rates",
+          baby_seat: "Baby Seat",
+          booster_seat: "Booster Seat",
+          no_extras: "No Extras",
+          devis_title: "Get a Quote",
+          calculate_btn: "CALCULATE",
+          contact_us_title: "Contact Us",
+          form_name: "Your name",
+          form_email: "Your email",
+          form_phone: "Your phone",
+          form_message: "Your message",
+          form_submit: "Send",
+          contact_footer_title: "Contact Us",
+          contact_heading: "Contact Us",
+          contact_footer: "Contact Us",
+          devis_heading: "Get a Quote",
+          form_depart: "Departure",
+          form_arrivee: "Arrival",
+          form_date: "Date",
+          form_heure: "Time",
+          form_options: "Additional Options",
+          premium_title: "Luxury at its finest",
+          premium_desc: "Perfect for business trips and special occasions",
+          name_placeholder: "Your name",
+          email_placeholder: "Your email",
+          phone_placeholder: "Your phone",
+          message_placeholder: "Your message",
+          submit_button: "Send",
+          contact_name: "Your name",
+          contact_email: "Your email",
+          contact_phone: "Your phone",
+          contact_message: "Your message",
+          contact_submit: "Send",
+        },
+        ar: {
+          please_select_addresses: "يرجى تحديد العناوين من الاقتراحات",
+          calculation_error: "خطأ في حساب المسار. يرجى المحاولة مرة أخرى.",
+          accueil: "الرئيسية",
+          services: "خدماتنا",
+          tarifs: "خدماتنا",
+          contact: "اتصل بنا",
+          devis: "احصل على تقدير سعر",
+          devis_title: "احصل على تقدير سعر",
+          depart: "المغادرة",
+          arrivee: "الوصول",
+          date: "التاريخ",
+          heure: "الوقت",
+          options: "خيارات إضافية",
+          calculer: "حساب",
+          distance: "المسافة",
+          duree: "المدة المقدرة",
+          reserver: "احجز الآن",
+          hero_title: "سائق متاح على مدار الساعة في جزيرة فرنسا ",
+          hero_subtitle: "سائقك لجميع التنقلات على inayatransports.fr",
+          bienvenue: "مرحبًا بكم في موقعنا<br />خدماتنا",
+          itineraire: "مسار حر",
+          itineraire_desc:
+            "استمتع براحة سياراتنا لجميع رحلاتك الشخصية، سواء كنت فردًا أو محترفًا.",
+          disposition: "تحت تصرفكم",
+          disposition_desc:
+            "يتكيف سائقونا مع احتياجاتك مع خدمة تأجير سيارات مخصصة مع سائق.",
+          navette: "نقل المطار",
+          navette_desc:
+            "احجز نقل المطار بسهولة للرحلات من وإلى جزيرة فرانس بنقرات قليلة فقط.",
+          evenementiel: "الفعاليات",
+          evenementiel_desc:
+            "نقل مخصص للفعاليات الخاصة بك، بأمان تام، إلى مكان احتفالاتك.",
+          vehicles_title: "سيارات مريحة<br />خدماتنا",
+          berline_title: "سيدان فاخرة",
+          van_title: "حافلة صغيرة",
+          slide_luxury: "الفخامة في أفضل حالاتها",
+          slide_business: "مثالي للرحلات التجارية والمناسبات الخاصة",
+          slide_spacieux: "فسيح ومريح",
+          slide_ideal: "مثالي للمجموعات والعائلات",
+          slide_interieur: "تصميم داخلي فاخر",
+          slide_espace: "مساحة وراحة لجميع رحلاتك",
+          slide_elegance: "أناقة وعملية",
+          slide_transport: "نقل المجموعات بأناقة",
+          slide_design: "تصميم عصري",
+          slide_solution: "الحل المثالي لسفر المجموعات",
+          slide_confort: "راحة مثالية",
+          slide_trajet: "لرحلات جماعية ممتعة",
+          btn_reserver: "حجز",
+          retour: "رجوع",
+          contact_title: "اتصل بنا",
+          envoyer: "إرسال",
+          telephone: "الهاتف:",
+          email_contact: "البريد الإلكتروني:",
+          footer_desc:
+            "inayatransports.fr في خدمتكم على مدار الساعة طوال أيام الأسبوع لنقلكم إلى الوجهة التي تختارونها. احجز بسرعة بنقرات قليلة.",
+          plan_site: "خريطة الموقع",
+          contact_footer: "الاتصال",
+          devis_footer: "تقدير السعر",
+          mentions: "الإشعارات القانونية",
+          contactez: "اتصل بنا",
+          copyright: "inayatransports.fr 2021 © جميع الحقوق محفوظة.",
+          cities_alert:
+            "الرجاء إدخال مدن صالحة من بين: باريس، مرسيليا، ليون، تولوز، نيس، نانت، ستراسبورغ، مونبلييه، بوردو، ليل",
+          placeholder_adresse: "أدخل عنوانًا",
+          placeholder_nom: "اسمك",
+          placeholder_email: "بريدك الإلكتروني",
+          placeholder_message: "رسالتك",
+          premium: "فاخر",
+          eco: "اقتصادي",
+          van: "حافلة",
+          logo_subtitle: "سائقك على inayatransports",
+          error_both_cities:
+            "لم يتم التعرف على مدن المغادرة والوصول. الرجاء إدخال مدن صالحة.",
+          error_departure_city:
+            "لم يتم التعرف على مدينة المغادرة. الرجاء إدخال مدينة صالحة.",
+          error_arrival_city:
+            "لم يتم التعرف على مدينة الوصول. الرجاء إدخال مدينة صالحة.",
+          modal_success: "تم إجراء الحساب بنجاح! إليك تفاصيل رحلتك.",
+          modal_results_title: "نتائج تقدير السعر",
+          modal_price_label: "السعر المقدر",
+          modal_distance_label: "مسافة الرحلة",
+          modal_duration_label: "المدة المقدرة",
+          modal_book_now: "احجز الآن",
+          efficient_comfortable: "فعال ومريح",
+          perfect_balance: "توازن مثالي بين الراحة والاقتصاد",
+          eco_title: "اقتصادي",
+          cta_rates: "أسعارنا",
+          baby_seat: "مقعد الطفل",
+          booster_seat: "مقعد داعم",
+          no_extras: "بدون إضافات",
+          devis_title: "احصل على تقدير سعر",
+          calculate_btn: "احسب",
+          contact_us_title: "اتصل بنا",
+          form_name: "اسمك",
+          form_email: "بريدك الإلكتروني",
+          form_phone: "رقم هاتفك",
+          form_message: "رسالتك",
+          form_submit: "إرسال",
+          contact_footer_title: "اتصل بنا",
+          contact_heading: "اتصل بنا",
+          contact_footer: "اتصل بنا",
+          devis_heading: "احصل على تقدير سعر",
+          form_depart: "المغادرة",
+          form_arrivee: "الوصول",
+          form_date: "التاريخ",
+          form_heure: "الوقت",
+          form_options: "خيارات إضافية",
+          premium_title: "الفخامة في أرقى صورها",
+          premium_desc: "مثالية لرحلات العمل والمناسبات الخاصة",
+          name_placeholder: "اسمك",
+          email_placeholder: "بريدك الإلكتروني",
+          phone_placeholder: "رقم هاتفك",
+          message_placeholder: "رسالتك",
+          submit_button: "إرسال",
+          contact_name: "اسمك",
+          contact_email: "بريدك الإلكتروني",
+          contact_phone: "رقم هاتفك",
+          contact_message: "رسالتك",
+          contact_submit: "إرسال",
+        },
+      };
+
+      // Elements to update when changing language
+      const elementsToUpdate = {
+        accueil: ".nav-menu a[href='#accueil']",
+        services: ".nav-menu a[href='#services']",
+        tarifs: ".nav-menu a[href='#tarifs']",
+        contact: ".nav-menu a[href='#contact']",
+        devis: ".nav-menu a[href='#devis']",
+        devis_title: ".reservation-form h2",
+        contact_heading: ".contact-heading",
+        contact_footer: ".contact-footer-heading",
+        hero_title: ".hero-text h2",
+        hero_subtitle: ".hero-text p",
+        bienvenue: ".services h2",
+        itineraire: ".service-item:nth-child(1) h3",
+        itineraire_desc: ".service-item:nth-child(1) p",
+        disposition: ".service-item:nth-child(2) h3",
+        disposition_desc: ".service-item:nth-child(2) p",
+        navette: ".service-item:nth-child(3) h3",
+        navette_desc: ".service-item:nth-child(3) p",
+        evenementiel: ".service-item:nth-child(4) h3",
+        evenementiel_desc: ".service-item:nth-child(4) p",
+        vehicles_title: ".tariffs h2",
+        berline_title: ".tariff-item:nth-child(1) h3",
+        eco_title: ".tariff-item:nth-child(2) h3",
+        van_title: ".tariff-item:nth-child(3) h3",
+        slide_luxury: "#premium-slider .slide:nth-child(1) .slide-overlay h4",
+        slide_business: "#premium-slider .slide:nth-child(1) .slide-overlay p",
+        efficient_comfortable: "#eco-slider .slide .slide-overlay h4",
+        perfect_balance: "#eco-slider .slide .slide-overlay p",
+        slide_spacieux: "#van-slider .slide:nth-child(1) .slide-overlay h4",
+        slide_ideal: "#van-slider .slide:nth-child(1) .slide-overlay p",
+        slide_interieur: "#van-slider .slide:nth-child(2) .slide-overlay h4",
+        slide_espace: "#van-slider .slide:nth-child(2) .slide-overlay p",
+        slide_elegance: "#van-slider .slide:nth-child(3) .slide-overlay h4",
+        slide_transport: "#van-slider .slide:nth-child(3) .slide-overlay p",
+        slide_design: "#van-slider .slide:nth-child(4) .slide-overlay h4",
+        slide_solution: "#van-slider .slide:nth-child(4) .slide-overlay p",
+        slide_confort: "#van-slider .slide:nth-child(5) .slide-overlay h4",
+        slide_trajet: "#van-slider .slide:nth-child(5) .slide-overlay p",
+        btn_reserver: ".cta-button",
+        retour: '.pop-out-nav-btn',
+        contact_title: ".contact h2",
+        envoyer: ".contact-btn",
+        telephone: ".contact-label:nth-of-type(1)",
+        email_contact: ".contact-label:nth-of-type(2)",
+        footer_desc: ".footer-section:nth-child(1) p",
+        plan_site: ".footer-section:nth-child(2) h3",
+        contact_footer: '.footer-section:nth-child(2) a[href="#contact"]',
+        devis_footer: '.footer-section:nth-child(2) a[href="#accueil"]',
+        mentions: '.footer-section:nth-child(2) a[href="#"]:last-child',
+        contactez: ".contact-footer-heading",
+        copyright: ".footer-bottom p",
+        logo_subtitle: ".logo-subtitle",
+        efficient_comfortable: "#eco-slider .slide .slide-overlay h4",
+        perfect_balance: "#eco-slider .slide .slide-overlay p",
+        cta_rates: ".cta-btn",
+        baby_seat: 'button[data-option="baby"] img',
+        booster_seat: 'button[data-option="booster"] img',
+        no_extras: "Aucune option",
+        devis_title: "#devis-container h2",
+        calculate_btn: ".calculate-btn",
+        contact_us_title: ".contact h2",
+        contact_footer_title: ".contact-footer-heading",
+        devis_heading: "#devis-heading",
+        form_depart: "label[for='depart']",
+        form_arrivee: "label[for='arrivee']",
+        form_date: "label[for='date']",
+        form_heure: "label[for='heure']",
+        form_options: ".options-label",
+        premium_title: ".premium-title",
+        premium_desc: ".premium-desc",
+        name_placeholder: ".name-input",
+        email_placeholder: ".email-input",
+        phone_placeholder: ".phone-input",
+        message_placeholder: ".message-input",
+        submit_button: ".submit-btn",
+        contact_name: ".contact-name",
+        contact_email: ".contact-email",
+        contact_phone: ".contact-phone",
+        contact_message: ".contact-message",
+        contact_submit: ".contact-submit span",
+      };
+
+      // Set the default language
+      let currentLanguage = "fr";
+
+      // Function to change the language
+      function changeLanguage(lang) {
+        if (!translations[lang]) return;
+
+        currentLanguage = lang;
+
+        // Update text content for all elements
+        for (const [key, selector] of Object.entries(elementsToUpdate)) {
+          try {
+            const elements = document.querySelectorAll(selector);
+            if (elements.length > 0) {
+              elements.forEach((el) => {
+                if (key === "retour") {
+                  if (el.textContent.trim().includes("Retour") || el.textContent.trim().includes("Back")) {
+                    el.textContent = translations[lang][key];
+                  }
+                } else if (
+                  key === "bienvenue" ||
+                  key === "vehicles_title" ||
+                  key.includes("hero_")
+                ) {
+                  el.innerHTML = translations[lang][key];
+                } else if (key === "baby_seat" || key === "booster_seat") {
+                  el.alt = translations[lang][key];
+                  el.parentElement.setAttribute('aria-label', translations[lang][key]);
+                } else {
+                  el.textContent = translations[lang][key];
+                }
+              });
+            }
+          } catch (error) {
+            console.log(`Error updating ${key}: ${error.message}`);
+          }
+        }
+
+        // Update form elements
+        const formElements = {
+          nom: "form_name",
+          email: "form_email",
+          phone: "form_phone",
+          message: "form_message"
+        };
+
+        for (const [id, translationKey] of Object.entries(formElements)) {
+          const element = document.getElementById(id);
+          if (element) {
+            element.placeholder = translations[lang][translationKey];
+          }
+        }
+
+        // Update submit button
+        const submitBtn = document.querySelector('.contact-btn span');
+        if (submitBtn) {
+          submitBtn.textContent = translations[lang].form_submit;
+        }
+
+        // Update placeholders for devis form
+        var departInput = document.getElementById("depart");
+        if (departInput) departInput.placeholder = translations[lang]["placeholder_adresse"];
+
+        var arriveeInput = document.getElementById("arrivee");
+        if (arriveeInput) arriveeInput.placeholder = translations[lang]["placeholder_adresse"];
+
+        // Update vehicle types
+        document.querySelectorAll(".vehicle-btn").forEach((btn, index) => {
+          const types = ["premium", "eco", "van"];
+          const textNode = Array.from(btn.childNodes).find(
+            (node) => node.nodeType === 3
+          ); // Find text node
+          if (textNode) {
+            // Preserve spacing
+            textNode.nodeValue = textNode.nodeValue.replace(
+              textNode.nodeValue.trim(),
+              translations[lang][types[index]]
+            );
+          }
+        });
+
+        // Update RTL for Arabic
+        if (lang === "ar") {
+          document.documentElement.dir = "rtl";
+          document.body.classList.add("rtl");
+        } else {
+          document.documentElement.dir = "ltr";
+          document.body.classList.remove("rtl");
+        }
+
+        // Reset all sliders to ensure they display correctly in the new language
+        resetAllSliders();
+
+        // Store the selected language in localStorage
+        localStorage.setItem("selectedLanguage", lang);
+
+        // Update modal content
+        var modalTitle = document.querySelector('.modal-content h3');
+        if (modalTitle) modalTitle.textContent = translations[lang].modal_results_title;
+
+        var modalSuccess = document.querySelector('.modal-success-message');
+        if (modalSuccess) modalSuccess.innerHTML = `<i class="fas fa-check-circle"></i> ${translations[lang].modal_success}`;
+
+        var labelDistance = document.querySelector('label[for="distance"]');
+        if (labelDistance) labelDistance.textContent = translations[lang].modal_distance_label;
+
+        var labelDuration = document.querySelector('label[for="duration"]');
+        if (labelDuration) labelDuration.textContent = translations[lang].modal_duration_label;
+
+        var labelPrice = document.querySelector('label[for="estimatedPrice"]');
+        if (labelPrice) labelPrice.textContent = translations[lang].modal_price_label;
+
+        var modalCta = document.querySelector('.modal-cta-button');
+        if (modalCta) modalCta.innerHTML = `<i class="fas fa-paper-plane"></i> ${translations[lang].modal_book_now}`;
+      }
+
+      // Function to reset all sliders to their initial state
+      function resetAllSliders() {
+        if (!sliders.premium.element || !sliders.van.element || !sliders.eco.element) return;
+
+        // Reset main sliders
+        sliders.premium.currentIndex = 0;
+        sliders.van.currentIndex = 0;
+        sliders.eco.currentIndex = 0;
+
+        sliders.premium.element.style.transform = "translateX(0)";
+        sliders.van.element.style.transform = "translateX(0)";
+        sliders.eco.element.style.transform = "translateX(0)";
+
+        // Update indicators
+        sliders.premium.indicators.forEach((indicator, index) => {
+          indicator.classList.toggle("active", index === 0);
+        });
+
+        sliders.van.indicators.forEach((indicator, index) => {
+          indicator.classList.toggle("active", index === 0);
+        });
+
+        sliders.eco.indicators.forEach((indicator, index) => {
+          indicator.classList.toggle("active", index === 0);
+        });
+
+        // Reset pop-out sliders if they exist
+        if (popOutSliders.premium.element) {
+          popOutSliders.premium.currentIndex = 0;
+          popOutSliders.premium.element.style.transform = "translateX(0)";
+
+          popOutSliders.premium.indicators.forEach((indicator, index) => {
+            indicator.classList.toggle("active", index === 0);
+          });
+        }
+
+        if (popOutSliders.van.element) {
+          popOutSliders.van.currentIndex = 0;
+          popOutSliders.van.element.style.transform = "translateX(0)";
+
+          popOutSliders.van.indicators.forEach((indicator, index) => {
+            indicator.classList.toggle("active", index === 0);
+          });
+        }
+
+        if (popOutSliders.eco.element) {
+          popOutSliders.eco.currentIndex = 0;
+          popOutSliders.eco.element.style.transform = "translateX(0)";
+
+          popOutSliders.eco.indicators.forEach((indicator, index) => {
+            indicator.classList.toggle("active", index === 0);
+          });
+        }
+      }
+
+      // Add event listeners to language selector links
+      document.addEventListener("DOMContentLoaded", function () {
+        const langLinks = document.querySelectorAll(
+          ".language-dropdown-content a"
+        );
+
+        langLinks.forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            const lang = this.textContent.toLowerCase().trim();
+            const langMap = { arabic: "ar", english: "en", french: "fr" };
+
+            if (langMap[lang]) {
+              changeLanguage(langMap[lang]);
+            }
+          });
+        });
+
+     
+
+        // Override alert for cities validation
+        const oldAlert = window.alert;
+        window.alert = function (message) {
+          if (
+            message ===
+            "Veuillez entrer des villes valides parmi : Paris, Marseille, Lyon, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille"
+          ) {
+            oldAlert(translations[currentLanguage]["cities_alert"]);
+          } else {
+            oldAlert(message);
+          }
+        };
+      });
+
+      // Track selected options
+      let hasBabySeat = false;
+      let hasBooster = false;
+
+      // Option button toggle logic
+      document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const option = btn.getAttribute('data-option');
+          if (option === 'baby') {
+            hasBabySeat = !hasBabySeat;
+            btn.classList.toggle('active', hasBabySeat);
+          } else if (option === 'booster') {
+            hasBooster = !hasBooster;
+            btn.classList.toggle('active', hasBooster);
+          } else if (option === 'none') {
+            // Deselect both
+            hasBabySeat = false;
+            hasBooster = false;
+            document.querySelectorAll('.option-btn[data-option="baby"], .option-btn[data-option="booster"]').forEach(b => b.classList.remove('active'));
+          }
+        });
+      });
+    </script>
+    <script>
+      // Slider functionality for both main and popup sliders
+      const sliderState = {
+        premium: { currentSlide: 0, totalSlides: 1 },
+        eco: { currentSlide: 0, totalSlides: 1 },
+        van: { currentSlide: 0, totalSlides: 5 }
+      };
+
+      const popupSliderState = {
+        premium: { currentSlide: 0, totalSlides: 1 },
+        eco: { currentSlide: 0, totalSlides: 1 },
+        van: { currentSlide: 0, totalSlides: 5 }
+      };
+
+      function changeSlide(direction, type, isPopup = false) {
+        const state = isPopup ? popupSliderState[type] : sliderState[type];
+        const sliderId = isPopup ? `${type}-pop-out-slider` : `${type}-slider`;
+        const dotsId = isPopup ? `${type}-pop-out-dots` : `${type}-dots`;
+        
+        const slider = document.getElementById(sliderId);
+        const dots = document.querySelectorAll(`#${dotsId} .dot`);
+        
+        state.currentSlide = (state.currentSlide + direction + state.totalSlides) % state.totalSlides;
+        
+        updateSlider(slider, state.currentSlide);
+        updateDots(dots, state.currentSlide);
+      }
+
+      function jumpToSlide(index, type, isPopup = false) {
+        const state = isPopup ? popupSliderState[type] : sliderState[type];
+        const sliderId = isPopup ? `${type}-pop-out-slider` : `${type}-slider`;
+        const dotsId = isPopup ? `${type}-pop-out-dots` : `${type}-dots`;
+        
+        const slider = document.getElementById(sliderId);
+        const dots = document.querySelectorAll(`#${dotsId} .dot`);
+        
+        state.currentSlide = index;
+        
+        updateSlider(slider, state.currentSlide);
+        updateDots(dots, state.currentSlide);
+      }
+
+      function updateSlider(slider, index) {
+        if (slider) {
+          slider.style.transform = `translateX(-${index * 100}%)`;
+        }
+      }
+
+      function updateDots(dots, index) {
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === index);
+        });
+      }
+
+      // Auto-advance van slider (main slider only)
+      setInterval(() => {
+        if (!document.hidden) {
+          changeSlide(1, 'van', false);
+        }
+      }, 5000);
+
+      // Pop-out functionality
+      function openPopOut(type) {
+        const popOut = document.getElementById(`${type}-pop-out`);
+        const overlay = document.getElementById('overlay-bg');
+        
+        if (popOut && overlay) {
+          // Sync the popup slider with the main slider's current position
+          popupSliderState[type].currentSlide = sliderState[type].currentSlide;
+          const popupSlider = document.getElementById(`${type}-pop-out-slider`);
+          const popupDots = document.querySelectorAll(`#${type}-pop-out-dots .dot`);
+          
+          updateSlider(popupSlider, popupSliderState[type].currentSlide);
+          updateDots(popupDots, popupSliderState[type].currentSlide);
+          
+          // Prevent body scroll
+          document.body.classList.add('popup-open');
+          
+          popOut.classList.add('active');
+          overlay.classList.add('active');
+
+          // Reset transform on slider to ensure proper display
+          if (popupSlider) {
+            popupSlider.style.transform = `translateX(-${popupSliderState[type].currentSlide * 100}%)`;
+          }
+        }
+      }
+
+      function closePopOut() {
+        const popOuts = document.querySelectorAll('.pop-out-card');
+        const overlay = document.getElementById('overlay-bg');
+        
+        // Re-enable body scroll
+        document.body.classList.remove('popup-open');
+        
+        popOuts.forEach(popOut => popOut.classList.remove('active'));
+        if (overlay) overlay.classList.remove('active');
+
+        // Smooth scroll to the tariffs section
+        const tariffsSection = document.getElementById('tarifs');
+        if (tariffsSection) {
+          tariffsSection.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }
+
+      // Initialize sliders and touch handling
+      document.addEventListener('DOMContentLoaded', () => {
+        // Previous initialization code...
+
+        // Touch handling for popup sliders
+        const popupSliders = document.querySelectorAll('.pop-out-slider');
+        popupSliders.forEach(slider => {
+          let startX;
+          let currentX;
+          let isDragging = false;
+          const type = slider.id.split('-')[0];
+
+          slider.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+            slider.style.transition = 'none';
+          }, { passive: true });
+
+          slider.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            
+            currentX = e.touches[0].clientX;
+            const diff = currentX - startX;
+            const currentSlide = popupSliderState[type].currentSlide;
+            const offset = -currentSlide * 100 + (diff / slider.offsetWidth) * 100;
+            
+            slider.style.transform = `translateX(${offset}%)`;
+          }, { passive: true });
+
+          slider.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            slider.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            const diff = currentX - startX;
+            const threshold = slider.offsetWidth * 0.2; // 20% threshold
+            
+            if (Math.abs(diff) > threshold) {
+              const direction = diff > 0 ? -1 : 1;
+              changeSlide(direction, type, true);
+            } else {
+              // Reset to current slide
+              updateSlider(slider, popupSliderState[type].currentSlide);
+            }
+          });
+        });
+
+        // Prevent zoom on double tap for touch devices
+        const touchElements = document.querySelectorAll('.pop-out-slider, .pop-out-slide, .pop-out-slide img');
+        touchElements.forEach(el => {
+          el.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) {
+              e.preventDefault();
+            }
+          }, { passive: false });
+        });
+      });
+
+      // Update slider function to handle mobile transitions better
+      function updateSlider(slider, index) {
+        if (slider) {
+          // Ensure proper transform on mobile
+          requestAnimationFrame(() => {
+            slider.style.transform = `translateX(-${index * 100}%)`;
+          });
+        }
+      }
+    </script>
+    <script>
+      // Address autocomplete using Photon API
+      function initializeAddressAutocomplete() {
+        const departInput = document.getElementById('depart');
+        const arriveeInput = document.getElementById('arrivee');
+        const departSuggestions = document.getElementById('depart-suggestions-container');
+        const arriveeSuggestions = document.getElementById('arrivee-suggestions-container');
+        
+        let debounceTimer;
+        
+        async function fetchAddressSuggestions(query) {
+          try {
+            const response = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5&lang=${currentLanguage}`);
+            const data = await response.json();
+            return data.features.map(feature => {
+              const properties = feature.properties;
+              const parts = [];
+              
+              if (properties.name) parts.push(properties.name);
+              if (properties.street) parts.push(properties.street);
+              if (properties.city) parts.push(properties.city);
+              if (properties.postcode) parts.push(properties.postcode);
+              if (properties.state) parts.push(properties.state);
+              if (properties.country) parts.push(properties.country);
+              
+              return {
+                display: parts.join(', '),
+                coordinates: feature.geometry.coordinates
+              };
+            });
+          } catch (error) {
+            console.error('Error fetching address suggestions:', error);
+            return [];
+          }
+        }
+        
+        function showSuggestions(suggestions, container, input) {
+          container.innerHTML = '';
+          container.style.display = suggestions.length ? 'block' : 'none';
+          
+          suggestions.forEach(suggestion => {
+            const div = document.createElement('div');
+            div.className = 'suggestion-item';
+            div.textContent = suggestion.display;
+            
+            div.addEventListener('click', () => {
+              input.value = suggestion.display;
+              container.style.display = 'none';
+              // Store coordinates for later use in route calculation
+              input.dataset.lat = suggestion.coordinates[1];
+              input.dataset.lon = suggestion.coordinates[0];
+            });
+            
+            container.appendChild(div);
+          });
+        }
+        
+        function setupAddressInput(input, suggestionsContainer) {
+          input.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            
+            if (input.value.length < 3) {
+              suggestionsContainer.style.display = 'none';
+              return;
+            }
+            
+            debounceTimer = setTimeout(async () => {
+              const suggestions = await fetchAddressSuggestions(input.value);
+              showSuggestions(suggestions, suggestionsContainer, input);
+            }, 300);
+          });
+          
+          // Close suggestions when clicking outside
+          document.addEventListener('click', (e) => {
+            if (!input.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+              suggestionsContainer.style.display = 'none';
+            }
+          });
+          
+          // Handle keyboard navigation
+          input.addEventListener('keydown', (e) => {
+            const items = suggestionsContainer.querySelectorAll('.suggestion-item');
+            const activeItem = suggestionsContainer.querySelector('.suggestion-item.selected');
+            
+            switch(e.key) {
+              case 'ArrowDown':
+                e.preventDefault();
+                if (!activeItem && items.length) {
+                  items[0].classList.add('selected');
+                } else if (activeItem && activeItem.nextElementSibling) {
+                  activeItem.classList.remove('selected');
+                  activeItem.nextElementSibling.classList.add('selected');
+                }
+                break;
+                
+              case 'ArrowUp':
+                e.preventDefault();
+                if (activeItem && activeItem.previousElementSibling) {
+                  activeItem.classList.remove('selected');
+                  activeItem.previousElementSibling.classList.add('selected');
+                }
+                break;
+                
+              case 'Enter':
+                if (activeItem) {
+                  e.preventDefault();
+                  activeItem.click();
+                }
+                break;
+                
+              case 'Escape':
+                suggestionsContainer.style.display = 'none';
+                break;
+            }
+          });
+        }
+        
+        // Initialize both inputs
+        setupAddressInput(departInput, departSuggestions);
+        setupAddressInput(arriveeInput, arriveeSuggestions);
+      }
+      
+      // Initialize address autocomplete when DOM is loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        initializeAddressAutocomplete();
+        // ... existing DOMContentLoaded code ...
+      });
+    </script>
+    <script>
+      // Function to calculate distance between two points using Haversine formula
+      function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Earth's radius in kilometers
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = 
+          Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+          Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        const distance = R * c;
+        return distance;
+      }
+
+      // Function to estimate driving time based on distance
+      function estimateDrivingTime(distance) {
+        const averageSpeed = 50; // Average speed in km/h
+        const timeInHours = distance / averageSpeed;
+        return Math.round(timeInHours * 60); // Convert to minutes
+      }
+
+      async function calculateRoute(event) {
+        event.preventDefault();
+        
+        const departInput = document.getElementById('depart');
+        const arriveeInput = document.getElementById('arrivee');
+        const vehicleType = document.getElementById('vehicle-type').value;
+        
+        try {
+          // Show loading state
+          document.querySelector('.calculate-btn').classList.add('loading');
+          
+          // Fetch coordinates for departure
+          const departResponse = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(departInput.value)}&limit=1&lang=${currentLanguage}`);
+          const departData = await departResponse.json();
+          
+          // Fetch coordinates for arrival
+          const arriveeResponse = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(arriveeInput.value)}&limit=1&lang=${currentLanguage}`);
+          const arriveeData = await arriveeResponse.json();
+          
+          if (departData.features.length === 0 || arriveeData.features.length === 0) {
+            throw new Error('Location not found');
+          }
+          
+          const departCoords = departData.features[0].geometry.coordinates;
+          const arriveeCoords = arriveeData.features[0].geometry.coordinates;
+          
+          // Calculate straight-line distance
+          const straightLineDistance = calculateDistance(
+            departCoords[1], departCoords[0],
+            arriveeCoords[1], arriveeCoords[0]
+          );
+          
+          // Apply road distance multiplier (typically roads are 20-30% longer than straight line)
+          const roadDistance = straightLineDistance * 1.3;
+          
+          // Estimate duration
+          const duration = estimateDrivingTime(roadDistance);
+          
+          // Calculate price based on vehicle type and distance
+          let pricePerKm;
+          switch(vehicleType) {
+            case 'premium':
+              pricePerKm = 2.5;
+              break;
+            case 'van':
+              pricePerKm = 3.0;
+              break;
+            case 'eco':
+            default:
+              pricePerKm = 2.0;
+          }
+          
+          // Add surcharge for baby seat or booster if selected
+          const hasBabySeat = document.querySelector('.option-btn[data-option="baby"]').classList.contains('active');
+          const hasBooster = document.querySelector('.option-btn[data-option="booster"]').classList.contains('active');
+          const extraCharge = (hasBabySeat ? 10 : 0) + (hasBooster ? 5 : 0);
+          
+          const basePrice = roadDistance * pricePerKm;
+          const totalPrice = basePrice + extraCharge;
+          
+          // Store coordinates for visualization
+          departInput.dataset.lat = departCoords[1];
+          departInput.dataset.lon = departCoords[0];
+          arriveeInput.dataset.lat = arriveeCoords[1];
+          arriveeInput.dataset.lon = arriveeCoords[0];
+          
+          // Update modal with results
+          document.getElementById('distance').value = `${roadDistance.toFixed(1)} km`;
+          document.getElementById('duration').value = `${duration} min`;
+          document.getElementById('estimatedPrice').value = `${totalPrice.toFixed(2)} €`;
+          
+          // Show the modal
+          document.querySelector('.results-container').classList.add('active');
+          
+          // Update route visualization
+          updateRouteVisualization(
+            departData.features[0].properties.name || departInput.value,
+            arriveeData.features[0].properties.name || arriveeInput.value
+          );
+          
+        } catch (error) {
+          console.error('Error calculating route:', error);
+          alert(translations[currentLanguage].calculation_error || 'Error calculating route. Please try again.');
+        } finally {
+          // Hide loading state
+          document.querySelector('.calculate-btn').classList.remove('loading');
+        }
+      }
+      
+      function updateRouteVisualization(fromAddress, toAddress) {
+        const mapCar = document.querySelector('.map-car');
+        if (mapCar) {
+          // Reset animation
+          mapCar.style.animation = 'none';
+          mapCar.offsetHeight; // Trigger reflow
+          mapCar.style.animation = 'mapCarDrive 4s infinite linear';
+        }
+        
+        // Update location labels if they exist
+        const startLabel = document.querySelector('.start-marker .city-label');
+        const endLabel = document.querySelector('.end-marker .city-label');
+        
+        if (startLabel) startLabel.textContent = fromAddress.split(',')[0];
+        if (endLabel) endLabel.textContent = toAddress.split(',')[0];
+      }
+      
+      // Add form submit handler
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        if (form) {
+          form.addEventListener('submit', calculateRoute);
+        }
+        
+        // Close modal when clicking close button or outside
+        const closeModal = document.querySelector('.close-modal');
+        const resultsContainer = document.querySelector('.results-container');
+        
+        if (closeModal && resultsContainer) {
+          closeModal.addEventListener('click', () => {
+            resultsContainer.classList.remove('active');
+          });
+          
+          resultsContainer.addEventListener('click', (e) => {
+            if (e.target === resultsContainer) {
+              resultsContainer.classList.remove('active');
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
+
