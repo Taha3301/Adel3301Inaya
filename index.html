@@ -2420,6 +2420,117 @@
       .transparent-header .language-icon {
         filter: brightness(0) invert(1); /* Only invert for transparent header */
       }
+
+      /* Date and Time Input Styles */
+      input[type="date"],
+      input[type="time"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #333;
+        background-color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      /* Custom styling for date and time inputs */
+      input[type="date"]::-webkit-calendar-picker-indicator,
+      input[type="time"]::-webkit-calendar-picker-indicator {
+        background-color: transparent;
+        padding: 5px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      input[type="date"]::-webkit-calendar-picker-indicator:hover,
+      input[type="time"]::-webkit-calendar-picker-indicator:hover {
+        background-color: #f0f0f0;
+      }
+
+      input[type="date"]:focus,
+      input[type="time"]:focus {
+        border-color: #f1c40f;
+        box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.1);
+        outline: none;
+      }
+
+      /* Hover state */
+      input[type="date"]:hover,
+      input[type="time"]:hover {
+        border-color: #f1c40f;
+      }
+
+      /* Mobile optimization */
+      @media (max-width: 768px) {
+        input[type="date"],
+        input[type="time"] {
+          font-size: 16px; /* Prevent zoom on mobile */
+          padding: 10px;
+        }
+        
+        .form-row {
+          flex-direction: column;
+          gap: 15px;
+        }
+        
+        .form-group {
+          width: 100%;
+        }
+      }
+
+      /* Firefox specific styles */
+      input[type="date"]::-moz-calendar-picker-indicator,
+      input[type="time"]::-moz-calendar-picker-indicator {
+        background-color: transparent;
+        cursor: pointer;
+      }
+
+      /* Edge specific styles */
+      input[type="date"]::-ms-clear,
+      input[type="time"]::-ms-clear {
+        display: none;
+      }
+
+      /* Label styling for date and time inputs */
+      .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #444;
+        font-weight: 500;
+      }
+
+      /* Container styling */
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      /* Dark mode support */
+      @media (prefers-color-scheme: dark) {
+        input[type="date"],
+        input[type="time"] {
+          background-color: #fff;
+          color: #333;
+        }
+        
+        input[type="date"]::-webkit-calendar-picker-indicator,
+        input[type="time"]::-webkit-calendar-picker-indicator {
+          filter: invert(0);
+        }
+      }
+
+      /* Vehicle label styles */
+      .vehicle-label {
+        transition: opacity 0.3s ease;
+      }
+
+      /* Hide vehicle labels when language is selected */
+      body[data-lang] .vehicle-label {
+        display: none;
+      }
     </style>
     <script>
       // Smooth scroll to contact section
@@ -2540,10 +2651,60 @@
         const languageLinks = document.querySelectorAll('.language-dropdown-content a');
         let isDropdownOpen = false;
 
+        // Vehicle text translations
+        const vehicleTranslations = {
+          en: {
+            premium: "Premium",
+            eco: "Eco",
+            van: "Van"
+          },
+          fr: {
+            premium: "Premium",
+            eco: "Eco",
+            van: "Van"
+          },
+          ar: {
+            premium: "بريميوم",
+            eco: "إيكو",
+            van: "فان"
+          }
+        };
+
+        function changeLanguage(lang) {
+          // Set the language attribute on the body
+          document.body.setAttribute('data-lang', lang);
+          
+          // Store the language preference
+          localStorage.setItem('preferred_language', lang);
+          
+          // Update vehicle button text
+          const vehicleButtons = document.querySelectorAll('.vehicle-btn');
+          vehicleButtons.forEach(button => {
+            const vehicleType = button.getAttribute('data-vehicle');
+            const img = button.querySelector('img');
+            // Clear the button content
+            button.innerHTML = '';
+            // Re-add the image
+            button.appendChild(img);
+            // Add the translated text
+            button.appendChild(document.createTextNode(' ' + vehicleTranslations[lang][vehicleType]));
+          });
+          
+          // Close dropdown
+          isDropdownOpen = false;
+          languageDropdown.classList.remove('active');
+        }
+
+        // Initialize language on page load
+        const storedLang = localStorage.getItem('preferred_language');
+        if (storedLang && vehicleTranslations[storedLang]) {
+          changeLanguage(storedLang);
+        }
+
         // Toggle dropdown when clicking the icon
         languageIcons.forEach(icon => {
           icon.addEventListener('click', function(e) {
-          e.stopPropagation();
+            e.stopPropagation();
             isDropdownOpen = !isDropdownOpen;
             languageDropdown.classList.toggle('active', isDropdownOpen);
           });
@@ -2571,8 +2732,6 @@
             
             if (langMap[lang]) {
               changeLanguage(langMap[lang]);
-              isDropdownOpen = false;
-              languageDropdown.classList.remove('active');
             }
           });
         });
@@ -2622,13 +2781,13 @@
     </script>
       <div class="vehicle-options">
         <button class="vehicle-btn" data-vehicle="premium">
-          <img src="assets/images/berline.png" alt="Premium" class="vehicle-img" />
+          <img src="assets/images/berline.png" alt="Premium" class="vehicle-img"  /> Premium
         </button>
         <button class="vehicle-btn" data-vehicle="eco">
-          <img src="assets/images/hybrid.png" alt="Eco" class="vehicle-img" />
+          <img src="assets/images/hybrid.png" alt="Eco" class="vehicle-img" /> Eco
         </button>
         <button class="vehicle-btn" data-vehicle="van">
-          <img src="assets/images/van.png" alt="Van" class="vehicle-img" />
+          <img src="assets/images/van.png" alt="Van" class="vehicle-img" /> Van
         </button>
       </div>
       
