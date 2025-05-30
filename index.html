@@ -19,6 +19,36 @@
     <style>
       /* Slider styles - Enhanced Professional Design */
       /* --- SLIDER CSS REMOVED --- */
+     
+
+
+/* Title styling */
+#devis-heading {
+  font-size: 1.3rem;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(to right, #00cfff, #3a7bd5); /* Gradient like the button */
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  text-align: center;
+  max-width: 90vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive tweaks for smaller screens */
+@media (max-width: 600px) {
+  #devis-heading {
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    white-space: normal;
+  }
+}
+
 
       .tariffs {
         padding: 60px 0;
@@ -1694,13 +1724,7 @@
           color: #3a7bd5;
         }
 
-        /* Mobile Language Section Styles */
-        .language-dropdown {
-          margin-top: 20px;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-          padding-top: 20px;
-        }
-
+       
         .language-icon-mobile,
         .language-icon-desktop {
           display: none !important;
@@ -2531,6 +2555,39 @@
       body[data-lang] .vehicle-label {
         display: none;
       }
+
+      /* Loading Spinner Animation */
+      .spinner {
+        display: none;
+        position: absolute;
+        right: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #3a7bd5;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        z-index: 2;
+      }
+
+      @keyframes spin {
+        0% { transform: translateY(-50%) rotate(0deg); }
+        100% { transform: translateY(-50%) rotate(360deg); }
+      }
+
+      .location-input-wrapper {
+        position: relative;
+      }
+
+      .location-input-wrapper.loading .spinner {
+        display: block;
+      }
+
+      .location-input-wrapper.loading .fa-map-marker-alt {
+        display: none;
+      }
     </style>
     <script>
       // Smooth scroll to contact section
@@ -2754,7 +2811,7 @@
         <ul>
           <li><a href="#accueil">Accueil</a></li>
           <li><a href="#services">Nos Services</a></li>
-          <li><a href="#tarifs">Nos Tarifs</a></li>
+          <li><a href="#tarifs">Nos Vehicules</a></li>
           <li><a href="#contact">Contactez-Nous</a></li>
           <li class="language-dropdown">
             <!-- Desktop icon -->
@@ -2776,16 +2833,41 @@
 <!--Deeeeeeeeviiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii-->
 <main id="accueil">
     <div class="reservation-form">
-      <h2 id="devis-heading">Faire Un Devis</h2>
+      <h2 id="devis-heading">Estimer le montant de mon trajet</h2>
       <script>  
+        // Add input event listeners for loading states
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('depart').addEventListener('input', function(e) {
+            const wrapper = this.closest('.location-input-wrapper');
+            if (this.value.length > 0) {
+              wrapper.classList.add('loading');
+              // Remove loading class after fetch completes (you should add this in your fetch callback)
+              setTimeout(() => {
+                wrapper.classList.remove('loading');
+              }, 1000); // Adjust this timeout to match your actual fetch timing
+            }
+          });
+
+          document.getElementById('arrivee').addEventListener('input', function(e) {
+            const wrapper = this.closest('.location-input-wrapper');
+            if (this.value.length > 0) {
+              wrapper.classList.add('loading');
+              // Remove loading class after fetch completes (you should add this in your fetch callback)
+              setTimeout(() => {
+                wrapper.classList.remove('loading');
+              }, 1000); // Adjust this timeout to match your actual fetch timing
+            }
+          });
+        });
     </script>
       <div class="vehicle-options">
-        <button class="vehicle-btn" data-vehicle="premium">
-          <img src="assets/images/berline.png" alt="Premium" class="vehicle-img"  /> Premium
-        </button>
         <button class="vehicle-btn" data-vehicle="eco">
           <img src="assets/images/hybrid.png" alt="Eco" class="vehicle-img" /> Eco
         </button>
+        <button class="vehicle-btn" data-vehicle="premium">
+          <img src="assets/images/berline.png" alt="Premium" class="vehicle-img"  /> Premium
+        </button>
+        
         <button class="vehicle-btn" data-vehicle="van">
           <img src="assets/images/van.png" alt="Van" class="vehicle-img" /> Van
         </button>
@@ -2809,6 +2891,7 @@
                 autocomplete="off"
               />
               <i class="fas fa-map-marker-alt"></i>
+              <div class="spinner"></div>
               <div
                 class="suggestions-container"
                 id="depart-suggestions-container"
@@ -2908,7 +2991,7 @@
           <span class="phone-icon"><i class="fas fa-phone"></i></span>
           <a href="tel:+33695608776">+33 6 95 60 87 76</a>
         </div>
-        <a href="#tarifs" class="cta-btn">Nos Tarifs</a>
+        <a href="#services" class="cta-btn">Nos Services</a>
       </div>
     </section>
 
@@ -2947,7 +3030,7 @@
           />
           <h3>Navette Aéroport</h3>
           <p>
-            Réservez facilement votre navette pour vos trajets de ou Vers les aéroports d’île de France.
+            Réservez facilement votre navette pour vos trajets de ou Vers les aéroports d'île de France.
           </p>
         </div>
         <div class="service-item">
@@ -2967,6 +3050,41 @@
     Des véhicules tout confort<br />Nos Services
   </h2>
   <div class="tariffs-grid">
+     <!-- Eco Card -->
+     <div class="tariff-item">
+      <div class="tariff-header">
+        <h3>Eco</h3>
+      </div>
+      <div class="slider-container">
+        <div class="slider" id="eco-slider">
+          <div class="slide">
+            <img src="assets/images/cars/Eco.jpg" alt="Eco Vehicle" loading="lazy">
+            <div class="slide-overlay">
+              <h4>Efficient and Comfortable</h4>
+              <p>Perfect balance of comfort and economy</p>
+            </div>
+          </div>
+        </div>
+        <button class="slider-nav prev" onclick="changeSlide(-1, 'eco')">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="slider-nav next" onclick="changeSlide(1, 'eco')">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="slider-dots" id="eco-dots">
+          <span class="dot active" onclick="jumpToSlide(0, 'eco')"></span>
+        </div>
+        <div class="pop-out-trigger" onclick="openPopOut('eco')">
+          <i class="fas fa-expand"></i>
+        </div>
+      </div>
+      <div class="tariff-info">
+        <div class="tariff-features">
+          
+        </div>
+        <a href="#contact" class="cta-button" onclick="scrollToContact(event)">Réserver</a>
+      </div>
+    </div>
     <!-- Premium Card -->
     <div class="tariff-item">
       <div class="tariff-header">
@@ -3003,42 +3121,6 @@
       </div>
     </div>
 
-    <!-- Eco Card -->
-    <div class="tariff-item">
-      <div class="tariff-header">
-        <h3>Eco</h3>
-      </div>
-      <div class="slider-container">
-        <div class="slider" id="eco-slider">
-          <div class="slide">
-            <img src="assets/images/cars/Eco.jpg" alt="Eco Vehicle" loading="lazy">
-            <div class="slide-overlay">
-              <h4>Efficient and Comfortable</h4>
-              <p>Perfect balance of comfort and economy</p>
-            </div>
-          </div>
-        </div>
-        <button class="slider-nav prev" onclick="changeSlide(-1, 'eco')">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="slider-nav next" onclick="changeSlide(1, 'eco')">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-        <div class="slider-dots" id="eco-dots">
-          <span class="dot active" onclick="jumpToSlide(0, 'eco')"></span>
-        </div>
-        <div class="pop-out-trigger" onclick="openPopOut('eco')">
-          <i class="fas fa-expand"></i>
-        </div>
-      </div>
-      <div class="tariff-info">
-        <div class="tariff-features">
-          
-        </div>
-        <a href="#contact" class="cta-button" onclick="scrollToContact(event)">Réserver</a>
-      </div>
-    </div>
-
     <!-- Van Card -->
     <div class="tariff-item">
       <div class="tariff-header">
@@ -3047,7 +3129,7 @@
       <div class="slider-container">
         <div class="slider" id="van-slider">
           <div class="slide">
-            <img src="assets/images/cars/van.jpg" alt="Van 1" loading="lazy">
+            <img src="assets/images/cars/van2.jpg" alt="Van 1" loading="lazy">
             <div class="slide-overlay">
               <h4>Spacious and Comfortable</h4>
               <p>Ideal for groups and families</p>
@@ -3061,7 +3143,7 @@
             </div>
           </div>
           <div class="slide">
-            <img src="assets/images/cars/van2.jpg" alt="Van 3" loading="lazy">
+            <img src="assets/images/cars/van.jpg" alt="Van 3" loading="lazy">
             <div class="slide-overlay">
               <h4>Elegance and Practicality</h4>
               <p>Group transport in elegance</p>
@@ -3155,13 +3237,13 @@
       <div class="pop-out-slider-container">
         <div class="pop-out-slider" id="van-pop-out-slider">
           <div class="pop-out-slide">
-            <img src="assets/images/cars/van.jpg" alt="Van 1" loading="lazy">
+            <img src="assets/images/cars/van2.jpg" alt="Van 1" loading="lazy">
           </div>
           <div class="pop-out-slide">
             <img src="assets/images/cars/van1.jpg" alt="Van 2" loading="lazy">
           </div>
           <div class="pop-out-slide">
-            <img src="assets/images/cars/van2.jpg" alt="Van 3" loading="lazy">
+            <img src="assets/images/cars/van.jpg" alt="Van 3" loading="lazy">
           </div>
           <div class="pop-out-slide">
             <img src="assets/images/cars/van3.jpg" alt="Van 4" loading="lazy">
@@ -3367,7 +3449,7 @@
         setInterval(() => {
           if (!document.hidden) {
             // Only auto-play if page is visible
-            changeSlide(1, "van");
+            changeSlide(1, "van", true);
           }
         }, 5000); // Change slide every 5 seconds
         
@@ -3453,8 +3535,8 @@
           services: "Nos Services",
           tarifs: "Nos Services",
           contact: "Contactez-Nous",
-          devis: "Faire Un Devis",
-          devis_title: "Faire Un Devis",
+          devis: "Estimer le montant de mon trajet",
+          devis_title: "Estimer le montant de mon trajet",
           depart: "Départ",
           arrivee: "Arrivée",
           date: "Date",
@@ -3538,11 +3620,11 @@
           efficient_comfortable: "Efficacité et confort",
           perfect_balance: "Équilibre parfait entre confort et économie",
           eco_title: "Éco",
-          cta_rates: "Nos Tarifs",
+          cta_rates: "Nos services",
           baby_seat: "Siège Bébé",
           booster_seat: "Réhausseur",
           no_extras: "Aucune option",
-          devis_title: "Faire Un Devis",
+          devis_title: "Estimer le montant de mon trajet",
           calculate_btn: "CALCULER",
           contact_us_title: "Contactez-Nous",
           form_name: "Votre nom",
@@ -3553,7 +3635,7 @@
           contact_footer_title: "Contactez-nous",
           contact_heading: "Contactez-Nous",
           contact_footer: "Contactez-nous",
-          devis_heading: "Faire Un Devis",
+          devis_heading: "Estimer le montant de mon trajet",
           form_depart: "Départ",
           form_arrivee: "Arrivée",
           form_date: "Date",
@@ -3579,8 +3661,8 @@
           services: "Our Services",
           tarifs: "Our Services",
           contact: "Contact Us",
-          devis: "Get a Quote",
-          devis_title: "Get a Quote",
+          devis: "Estimate the cost of my trip",
+          devis_title: "Estimate the cost of my trip",
           depart: "Departure",
           arrivee: "Arrival",
           date: "Date",
@@ -3664,7 +3746,7 @@
           baby_seat: "Baby Seat",
           booster_seat: "Booster Seat",
           no_extras: "No Extras",
-          devis_title: "Get a Quote",
+          devis_title: "Estimate the cost of my trip",
           calculate_btn: "CALCULATE",
           contact_us_title: "Contact Us",
           form_name: "Your name",
@@ -3675,7 +3757,7 @@
           contact_footer_title: "Contact Us",
           contact_heading: "Contact Us",
           contact_footer: "Contact Us",
-          devis_heading: "Get a Quote",
+          devis_heading: "Estimate the cost of my trip",
           form_depart: "Departure",
           form_arrivee: "Arrival",
           form_date: "Date",
@@ -3701,8 +3783,8 @@
           services: "خدماتنا",
           tarifs: "خدماتنا",
           contact: "اتصل بنا",
-          devis: "احصل على تقدير سعر",
-          devis_title: "احصل على تقدير سعر",
+          devis: "احصل على تقدير تكلفة رحلتي",
+          devis_title: "احصل على تقدير تكلفة رحلتي",
           depart: "المغادرة",
           arrivee: "الوصول",
           date: "التاريخ",
@@ -3785,7 +3867,7 @@
           baby_seat: "مقعد الطفل",
           booster_seat: "مقعد داعم",
           no_extras: "بدون إضافات",
-          devis_title: "احصل على تقدير سعر",
+          devis_title: "احصل على تقدير تكلفة رحلتي",
           calculate_btn: "احسب",
           contact_us_title: "اتصل بنا",
           form_name: "اسمك",
@@ -3796,7 +3878,7 @@
           contact_footer_title: "اتصل بنا",
           contact_heading: "اتصل بنا",
           contact_footer: "اتصل بنا",
-          devis_heading: "احصل على تقدير سعر",
+          devis_heading: "احصل على تقدير تكلفة رحلتي",
           form_depart: "المغادرة",
           form_arrivee: "الوصول",
           form_date: "التاريخ",
