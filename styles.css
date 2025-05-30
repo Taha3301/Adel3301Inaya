@@ -134,14 +134,16 @@ main::before {
 
 @keyframes backgroundCycle {
     0% {
-        background-image: url("assets/images/cars/van1.jpg");
-    }
-
-    33% {
         background-image: url("assets/images/cars/van2.jpg");
     }
+    15% {
+        background-image: url("assets/images/cars/van1.jpg");
+    }
+    30% {
+        background-image: url("assets/images/cars/van.jpg");
+    }
 
-    66% {
+    45% {
         background-image: url("assets/images/cars/van3.jpg");
     }
     
