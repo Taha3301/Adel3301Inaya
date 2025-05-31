@@ -23,14 +23,15 @@
 
 
 /* Title styling */
+/* Title styling */
 #devis-heading {
   font-size: 1.3rem;
-  color: white;
+  color: black; /* Black text */
   font-weight: 600;
   letter-spacing: 0.5px;
   padding: 0.6rem 1.2rem;
-  background: linear-gradient(to right, #00cfff, #3a7bd5); /* Gradient like the button */
-  border: none;
+  background-color: transparent; /* Transparent background */
+  border: 2px solid #888888; /* Gray border */
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
@@ -48,6 +49,7 @@
     white-space: normal;
   }
 }
+
 
 
       .tariffs {
@@ -2176,7 +2178,7 @@
         display: block;
         width: 100%;
         padding: 15px 20px;
-        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+        background: linear-gradient(90deg, #545656 0%, #a0a4a9 100%);
         color: white;
         border: none;
         border-radius: 8px;
@@ -2192,7 +2194,7 @@
       }
 
       .calculate-btn:hover {
-        background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+        background: linear-gradient(90deg, #3a7bd5 0%, #942f92 100%);
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       }
@@ -2555,39 +2557,6 @@
       body[data-lang] .vehicle-label {
         display: none;
       }
-
-      /* Loading Spinner Animation */
-      .spinner {
-        display: none;
-        position: absolute;
-        right: 40px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 20px;
-        height: 20px;
-        border: 2px solid #f3f3f3;
-        border-top: 2px solid #3a7bd5;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-        z-index: 2;
-      }
-
-      @keyframes spin {
-        0% { transform: translateY(-50%) rotate(0deg); }
-        100% { transform: translateY(-50%) rotate(360deg); }
-      }
-
-      .location-input-wrapper {
-        position: relative;
-      }
-
-      .location-input-wrapper.loading .spinner {
-        display: block;
-      }
-
-      .location-input-wrapper.loading .fa-map-marker-alt {
-        display: none;
-      }
     </style>
     <script>
       // Smooth scroll to contact section
@@ -2728,24 +2697,24 @@
         };
 
         function changeLanguage(lang) {
-          currentLanguage = lang;
+          // Set the language attribute on the body
           document.body.setAttribute('data-lang', lang);
+          
+          // Store the language preference
           localStorage.setItem('preferred_language', lang);
           
-          // Update all translations
-          document.querySelectorAll('[data-translate]').forEach(element => {
-            const key = element.getAttribute('data-translate');
-            if (translations[lang] && translations[lang][key]) {
-              element.textContent = translations[lang][key];
-            }
+          // Update vehicle button text
+          const vehicleButtons = document.querySelectorAll('.vehicle-btn');
+          vehicleButtons.forEach(button => {
+            const vehicleType = button.getAttribute('data-vehicle');
+            const img = button.querySelector('img');
+            // Clear the button content
+            button.innerHTML = '';
+            // Re-add the image
+            button.appendChild(img);
+            // Add the translated text
+            button.appendChild(document.createTextNode(' ' + vehicleTranslations[lang][vehicleType]));
           });
-
-          // Update modal translations
-          updateModalTranslations(lang);
-          
-          // Update RTL/LTR
-          document.dir = lang === 'ar' ? 'rtl' : 'ltr';
-          document.body.classList.toggle('rtl', lang === 'ar');
           
           // Close dropdown
           isDropdownOpen = false;
@@ -2835,30 +2804,6 @@
     <div class="reservation-form">
       <h2 id="devis-heading">Estimer le montant de mon trajet</h2>
       <script>  
-        // Add input event listeners for loading states
-        document.addEventListener('DOMContentLoaded', function() {
-          document.getElementById('depart').addEventListener('input', function(e) {
-            const wrapper = this.closest('.location-input-wrapper');
-            if (this.value.length > 0) {
-              wrapper.classList.add('loading');
-              // Remove loading class after fetch completes (you should add this in your fetch callback)
-              setTimeout(() => {
-                wrapper.classList.remove('loading');
-              }, 1000); // Adjust this timeout to match your actual fetch timing
-            }
-          });
-
-          document.getElementById('arrivee').addEventListener('input', function(e) {
-            const wrapper = this.closest('.location-input-wrapper');
-            if (this.value.length > 0) {
-              wrapper.classList.add('loading');
-              // Remove loading class after fetch completes (you should add this in your fetch callback)
-              setTimeout(() => {
-                wrapper.classList.remove('loading');
-              }, 1000); // Adjust this timeout to match your actual fetch timing
-            }
-          });
-        });
     </script>
       <div class="vehicle-options">
         <button class="vehicle-btn" data-vehicle="eco">
@@ -2891,7 +2836,6 @@
                 autocomplete="off"
               />
               <i class="fas fa-map-marker-alt"></i>
-              <div class="spinner"></div>
               <div
                 class="suggestions-container"
                 id="depart-suggestions-container"
@@ -3030,7 +2974,7 @@
           />
           <h3>Navette Aéroport</h3>
           <p>
-            Réservez facilement votre navette pour vos trajets de ou Vers les aéroports d'île de France.
+            Réservez facilement votre navette pour vos trajets de ou Vers les aéroports d’île de France.
           </p>
         </div>
         <div class="service-item">
@@ -3347,25 +3291,25 @@
       <div class="results-modal">
         <div class="modal-content">
           <span class="close-modal">&times;</span>
-          <h3 class="modal-title" data-translate="modal_title">Résultats de Votre Estimation</h3>
-          <div class="modal-success" data-translate="modal_success">
+          <h3>Résultats de Votre Estimation</h3>
+          <div class="modal-success-message">
             <i class="fas fa-check-circle"></i> Calcul effectué avec succès ! Voici les détails de votre trajet.
           </div>
           <div class="form-group">
-            <label for="distance" class="modal-distance" data-translate="modal_distance_label">Distance de trajet</label>
+            <label for="distance">Distance de trajet</label>
             <input type="text" id="distance" readonly>
           </div>
           <div class="form-group">
-            <label for="duration" class="modal-duration" data-translate="modal_duration_label">Durée estimée</label>
+            <label for="duration">Durée estimée</label>
             <input type="text" id="duration" readonly>
           </div>
           <div class="form-group">
-            <label for="estimatedPrice" class="modal-price" data-translate="modal_price_label">Prix estimé</label>
+            <label for="estimatedPrice">Prix estimé</label>
             <input type="text" id="estimatedPrice" readonly>
           </div>
           <div class="modal-cta">
             <a href="#contact" class="modal-cta-button">
-              <i class="fas fa-paper-plane"></i> <span class="modal-book" data-translate="modal_book_now">Réserver maintenant</span>
+              <i class="fas fa-paper-plane"></i> Réserver maintenant
             </a>
           </div>
         </div>
@@ -3653,12 +3597,6 @@
           contact_phone: "Votre téléphone",
           contact_message: "Votre message",
           contact_submit: "Envoyer",
-          modal_title: "Résultats de Votre Estimation",
-          modal_success: "Calcul effectué avec succès ! Voici les détails de votre trajet.",
-          modal_distance: "Distance de trajet",
-          modal_duration: "Durée estimée",
-          modal_price: "Prix estimé",
-          modal_book: "Réserver maintenant",
         },
         en: {
           please_select_addresses: "Please select addresses from the suggestions",
@@ -3781,12 +3719,6 @@
           contact_phone: "Your phone",
           contact_message: "Your message",
           contact_submit: "Send",
-          modal_title: "Your Quote Results",
-          modal_success: "Calculation completed successfully! Here are your journey details.",
-          modal_distance: "Journey Distance",
-          modal_duration: "Estimated Duration",
-          modal_price: "Estimated Price",
-          modal_book: "Book Now",
         },
         ar: {
           please_select_addresses: "يرجى تحديد العناوين من الاقتراحات",
@@ -3908,12 +3840,6 @@
           contact_phone: "رقم هاتفك",
           contact_message: "رسالتك",
           contact_submit: "إرسال",
-          modal_title: "نتائج التقدير",
-          modal_success: "تم احتساب التكلفة بنجاح! إليك تفاصيل رحلتك.",
-          modal_distance: "مسافة الرحلة",
-          modal_duration: "المدة المتوقعة",
-          modal_price: "السعر المقدر",
-          modal_book: "احجز الآن",
         },
       };
 
@@ -4182,65 +4108,27 @@
             e.preventDefault();
             const lang = this.textContent.toLowerCase().trim();
             const langMap = { arabic: "ar", english: "en", french: "fr" };
-            
+
             if (langMap[lang]) {
-              const selectedLang = langMap[lang];
-              
-              // Update language state
-              currentLanguage = selectedLang;
-              document.body.setAttribute('data-lang', selectedLang);
-              localStorage.setItem('preferred_language', selectedLang);
-              
-              // Update all elements with data-translate attribute
-              document.querySelectorAll('[data-translate]').forEach(element => {
-                const key = element.getAttribute('data-translate');
-                if (translations[selectedLang] && translations[selectedLang][key]) {
-                  if (element.classList.contains('modal-success')) {
-                    element.innerHTML = `<i class="fas fa-check-circle"></i> ${translations[selectedLang][key]}`;
-                  } else {
-                    element.textContent = translations[selectedLang][key];
-                  }
-                }
-              });
-              
-              // Update vehicle buttons
-              const vehicleButtons = document.querySelectorAll('.vehicle-btn');
-              vehicleButtons.forEach(button => {
-                const vehicleType = button.getAttribute('data-vehicle');
-                const img = button.querySelector('img');
-                button.innerHTML = '';
-                button.appendChild(img);
-                button.appendChild(document.createTextNode(' ' + vehicleTranslations[selectedLang][vehicleType]));
-              });
-              
-              // Update form placeholders
-              const departInput = document.getElementById('depart');
-              const arriveeInput = document.getElementById('arrivee');
-              if (departInput) departInput.placeholder = translations[selectedLang].placeholder_adresse;
-              if (arriveeInput) arriveeInput.placeholder = translations[selectedLang].placeholder_adresse;
-              
-              // Update RTL/LTR
-              document.dir = selectedLang === 'ar' ? 'rtl' : 'ltr';
-              document.body.classList.toggle('rtl', selectedLang === 'ar');
-              
-              // Close dropdown
-              const dropdown = document.querySelector('.language-dropdown');
-              if (dropdown) dropdown.classList.remove('active');
+              changeLanguage(langMap[lang]);
             }
           });
         });
 
-        // Initialize with stored language preference
-        const storedLang = localStorage.getItem('preferred_language');
-        if (storedLang && translations[storedLang]) {
-          const langLink = Array.from(langLinks).find(link => 
-            link.textContent.toLowerCase().trim() === 
-            Object.entries(langMap).find(([k, v]) => v === storedLang)[0]
-          );
-          if (langLink) {
-            langLink.click();
+     
+
+        // Override alert for cities validation
+        const oldAlert = window.alert;
+        window.alert = function (message) {
+          if (
+            message ===
+            "Veuillez entrer des villes valides parmi : Paris, Marseille, Lyon, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille"
+          ) {
+            oldAlert(translations[currentLanguage]["cities_alert"]);
+          } else {
+            oldAlert(message);
           }
-        }
+        };
       });
 
       // Track selected options
@@ -4658,22 +4546,7 @@
           arriveeInput.dataset.lat = arriveeCoords[1];
           arriveeInput.dataset.lon = arriveeCoords[0];
           
-          // Update modal content with proper translations
-          const modalTitle = document.querySelector('.modal-title');
-          const modalSuccess = document.querySelector('.modal-success');
-          const distanceLabel = document.querySelector('label[for="distance"]');
-          const durationLabel = document.querySelector('label[for="duration"]');
-          const priceLabel = document.querySelector('label[for="estimatedPrice"]');
-          const bookButton = document.querySelector('.modal-book');
-
-          if (modalTitle) modalTitle.textContent = translations[currentLanguage].modal_title;
-          if (modalSuccess) modalSuccess.innerHTML = `<i class="fas fa-check-circle"></i> ${translations[currentLanguage].modal_success}`;
-          if (distanceLabel) distanceLabel.textContent = translations[currentLanguage].modal_distance_label;
-          if (durationLabel) durationLabel.textContent = translations[currentLanguage].modal_duration_label;
-          if (priceLabel) priceLabel.textContent = translations[currentLanguage].modal_price_label;
-          if (bookButton) bookButton.textContent = translations[currentLanguage].modal_book_now;
-          
-          // Update the values
+          // Update modal with results
           document.getElementById('distance').value = `${roadDistance.toFixed(1)} km`;
           document.getElementById('duration').value = `${duration} min`;
           document.getElementById('estimatedPrice').value = `${totalPrice.toFixed(2)} €`;
@@ -4739,4 +4612,3 @@
     </script>
   </body>
 </html>
-
