@@ -2974,7 +2974,7 @@
           />
           <h3>Navette Aéroport</h3>
           <p>
-            Réservez facilement votre navette pour vos trajets de ou Vers les aéroports d’île de France.
+            Réservez facilement votre navette pour vos trajets de ou Vers les aéroports d'île de France.
           </p>
         </div>
         <div class="service-item">
@@ -4026,6 +4026,10 @@
         var modalTitle = document.querySelector('.modal-content h3');
         if (modalTitle) modalTitle.textContent = translations[lang].modal_results_title;
 
+        // Update calculate button text
+        var calculateBtn = document.querySelector('.calculate-btn');
+        if (calculateBtn) calculateBtn.textContent = translations[lang].calculer;
+
         var modalSuccess = document.querySelector('.modal-success-message');
         if (modalSuccess) modalSuccess.innerHTML = `<i class="fas fa-check-circle"></i> ${translations[lang].modal_success}`;
 
@@ -4166,6 +4170,13 @@
         premium: { currentSlide: 0, totalSlides: 1 },
         eco: { currentSlide: 0, totalSlides: 1 },
         van: { currentSlide: 0, totalSlides: 5 }
+      };
+
+      // Initialize pop-out sliders state
+      const popOutSliders = {
+        premium: { element: null, indicators: [], currentIndex: 0 },
+        van: { element: null, indicators: [], currentIndex: 0 },
+        eco: { element: null, indicators: [], currentIndex: 0 }
       };
 
       function changeSlide(direction, type, isPopup = false) {
@@ -4612,3 +4623,4 @@
     </script>
   </body>
 </html>
+
