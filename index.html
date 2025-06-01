@@ -2716,6 +2716,20 @@
             button.appendChild(document.createTextNode(' ' + vehicleTranslations[lang][vehicleType]));
           });
           
+          // Ensure vehicle buttons order
+          const vehicleOptions = document.querySelector('.vehicle-options');
+          const ecoBtn = vehicleOptions.querySelector('[data-vehicle="eco"]');
+          const premiumBtn = vehicleOptions.querySelector('[data-vehicle="premium"]');
+          const vanBtn = vehicleOptions.querySelector('[data-vehicle="van"]');
+          vehicleOptions.append(ecoBtn, premiumBtn, vanBtn);
+          
+          // Ensure car cards order
+          const tariffsGrid = document.querySelector('.tariffs-grid');
+          const ecoCard = tariffsGrid.querySelector('#eco-slider').closest('.tariff-item');
+          const premiumCard = tariffsGrid.querySelector('#premium-slider').closest('.tariff-item');
+          const vanCard = tariffsGrid.querySelector('#van-slider').closest('.tariff-item');
+          tariffsGrid.append(ecoCard, premiumCard, vanCard);
+          
           // Close dropdown
           isDropdownOpen = false;
           languageDropdown.classList.remove('active');
@@ -2812,7 +2826,6 @@
         <button class="vehicle-btn" data-vehicle="premium">
           <img src="assets/images/berline.png" alt="Premium" class="vehicle-img"  /> Premium
         </button>
-        
         <button class="vehicle-btn" data-vehicle="van">
           <img src="assets/images/van.png" alt="Van" class="vehicle-img" /> Van
         </button>
@@ -2994,8 +3007,8 @@
     Des véhicules tout confort<br />Nos Services
   </h2>
   <div class="tariffs-grid">
-     <!-- Eco Card -->
-     <div class="tariff-item">
+    <!-- Eco Card -->
+    <div class="tariff-item">
       <div class="tariff-header">
         <h3>Eco</h3>
       </div>
@@ -3029,6 +3042,7 @@
         <a href="#contact" class="cta-button" onclick="scrollToContact(event)">Réserver</a>
       </div>
     </div>
+
     <!-- Premium Card -->
     <div class="tariff-item">
       <div class="tariff-header">
@@ -3064,6 +3078,7 @@
         <a href="#contact" class="cta-button" onclick="scrollToContact(event)">Réserver</a>
       </div>
     </div>
+    
 
     <!-- Van Card -->
     <div class="tariff-item">
@@ -3507,7 +3522,7 @@
           evenementiel_desc:
             "Transport sur mesure pour vos évènements, en toute sécurité, vers le lieu de vos festivités.",
           vehicles_title: "Des véhicules tout confort<br />Nos Services",
-          berline_title: "Premium",
+          berline_title: "Eco",
           van_title: "Van",
           slide_luxury: "Luxury at its finest",
           slide_business: "Perfect for business trips and special occasions",
@@ -3543,8 +3558,8 @@
           placeholder_nom: "Votre nom",
           placeholder_email: "Votre email",
           placeholder_message: "Votre message",
-          premium: "Premium",
-          eco: "ECO",
+          premium: "Eco",
+          eco: "Premium",
           van: "VAN",
           logo_subtitle: "Votre chauffeur sur inayatransports",
           error_both_cities:
@@ -3563,7 +3578,7 @@
           perfect_balance: "Perfect balance of comfort and economy",
           efficient_comfortable: "Efficacité et confort",
           perfect_balance: "Équilibre parfait entre confort et économie",
-          eco_title: "Éco",
+          eco_title: "Premium",
           cta_rates: "Nos services",
           baby_seat: "Siège Bébé",
           booster_seat: "Réhausseur",
@@ -3632,7 +3647,7 @@
           evenementiel_desc:
             "Tailor-made transport for your events, in complete safety, to the location of your festivities.",
           vehicles_title: "Comfortable vehicles<br />Our Services",
-          berline_title: "Premium",
+          berline_title: "Eco",
           van_title: "Van",
           slide_luxury: "Luxury at its finest",
           slide_business: "Perfect for business trips and special occasions",
@@ -3667,8 +3682,8 @@
           placeholder_nom: "Your name",
           placeholder_email: "Your email",
           placeholder_message: "Your message",
-          premium: "Premium",
-          eco: "ECO",
+          premium: "Eco",
+          eco: "Premium",
           van: "VAN",
           logo_subtitle: "Your driver on inayatransports",
           error_both_cities:
@@ -3685,7 +3700,7 @@
           modal_book_now: "Book Now",
           efficient_comfortable: "Efficient and Comfortable",
           perfect_balance: "Perfect balance of comfort and economy",
-          eco_title: "Eco",
+          eco_title: "Premium",
           cta_rates: "Our Rates",
           baby_seat: "Baby Seat",
           booster_seat: "Booster Seat",
@@ -3754,7 +3769,7 @@
           evenementiel_desc:
             "نقل مخصص للفعاليات الخاصة بك، بأمان تام، إلى مكان احتفالاتك.",
           vehicles_title: "سيارات مريحة<br />خدماتنا",
-          berline_title: "سيدان فاخرة",
+          berline_title:" اقتصادي",
           van_title: "حافلة صغيرة",
           slide_luxury: "الفخامة في أفضل حالاتها",
           slide_business: "مثالي للرحلات التجارية والمناسبات الخاصة",
@@ -3788,8 +3803,8 @@
           placeholder_nom: "اسمك",
           placeholder_email: "بريدك الإلكتروني",
           placeholder_message: "رسالتك",
-          premium: "فاخر",
-          eco: "اقتصادي",
+          premium: "اقتصادي",
+          eco: "فاخر",
           van: "حافلة",
           logo_subtitle: "سائقك على inayatransports",
           error_both_cities:
@@ -3806,7 +3821,7 @@
           modal_book_now: "احجز الآن",
           efficient_comfortable: "فعال ومريح",
           perfect_balance: "توازن مثالي بين الراحة والاقتصاد",
-          eco_title: "اقتصادي",
+          eco_title: "فاخر",
           cta_rates: "أسعارنا",
           baby_seat: "مقعد الطفل",
           booster_seat: "مقعد داعم",
