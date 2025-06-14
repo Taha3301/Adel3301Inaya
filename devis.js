@@ -227,14 +227,14 @@ document.addEventListener('DOMContentLoaded', function () {
         let pricePerKm;
         switch(vehicleType) {
           case 'premium':
-            pricePerKm = 2.5;
+            pricePerKm = 2.0;
             break;
           case 'van':
             pricePerKm = 3.0;
             break;
           case 'eco':
           default:
-            pricePerKm = 2.0;
+            pricePerKm = 2.5;
         }
         
         let price = distanceKm * pricePerKm;
