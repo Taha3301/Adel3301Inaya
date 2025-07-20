@@ -4646,6 +4646,32 @@
         }
       });
     </script>
+    <script>
+      // Close results modal and scroll to contact when clicking 'Réserver maintenant'
+      document.addEventListener('DOMContentLoaded', function() {
+        var modalCtaBtn = document.querySelector('.modal-cta-button');
+        var resultsContainer = document.querySelector('.results-container');
+        if (modalCtaBtn && resultsContainer) {
+          modalCtaBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Close the modal
+            resultsContainer.classList.remove('active');
+            // Scroll to contact after a short delay for smoothness
+            setTimeout(function() {
+              var contactSection = document.getElementById('contact');
+              if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Optionally focus the name input
+                setTimeout(function() {
+                  var nameInput = document.getElementById('nom');
+                  if (nameInput) nameInput.focus();
+                }, 1000);
+              }
+            }, 300);
+          });
+        }
+      });
+    </script>
   </body>
 </html>
 
