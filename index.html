@@ -30,7 +30,21 @@
      
 
 
-/* Title styling */
+/* France-only notice styling */
+.france-only-notice {
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  background-color: rgba(241, 196, 15, 0.1);
+  border: 1px solid rgba(241, 196, 15, 0.3);
+  border-radius: 8px;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* Title styling */
 #devis-heading {
   font-size: 1.3rem;
@@ -2983,7 +2997,7 @@
           />
           <h3>Mise à Disposition</h3>
           <p>
-          Nos chauffeurs s’adaptent à vos besoins avec un service de taxi personnalisé, un taxi sur mesure pour chaque trajet.
+          Nos chauffeurs s'adaptent à vos besoins avec un service de taxi personnalisé, un taxi sur mesure pour chaque trajet.
           </p>
         </div>
         <div class="service-item">
@@ -3001,7 +3015,7 @@
           <img src="assets/a-venir.png" alt="Événementiel Icon" class="icon" />
           <h3>Événementiel</h3>
           <p>
-            Service de taxi sur mesure pour vos évènements, en toute sécurité, jusqu’au lieu de vos festivités.
+            Service de taxi sur mesure pour vos évènements, en toute sécurité, jusqu'au lieu de vos festivités.
           </p>
         </div>
       </div>
@@ -3564,6 +3578,8 @@
             "inayatransports.fr 2021 © Tous droits réservés. ",
           cities_alert:
             "Veuillez entrer des villes valides parmi : Paris, Marseille, Lyon, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille",
+          france_only_error: "Les deux adresses (départ et arrivée) doivent être en France. Veuillez entrer des adresses françaises valides.",
+          location_not_found: "Adresse non trouvée. Veuillez entrer une adresse valide en France.",
           placeholder_adresse: "Entrez une adresse",
           placeholder_nom: "Votre nom",
           placeholder_email: "Votre email",
@@ -3605,6 +3621,7 @@
           contact_heading: "Contactez-Nous",
           contact_footer: "Contactez-nous",
           devis_heading: "Estimer le montant de mon trajet",
+          france_only_notice: "📍 Service disponible uniquement en France",
           form_depart: "Départ",
           form_arrivee: "Arrivée",
           form_date: "Date",
@@ -3688,6 +3705,8 @@
             "inayatransports.fr 2021 © All rights reserved.",
           cities_alert:
             "Please enter valid cities among: Paris, Marseille, Lyon, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille",
+          france_only_error: "Both departure and arrival addresses must be in France. Please enter valid French addresses.",
+          location_not_found: "Location not found. Please enter a valid address in France.",
           placeholder_adresse: "Enter an address",
           placeholder_nom: "Your name",
           placeholder_email: "Your email",
@@ -3727,6 +3746,7 @@
           contact_heading: "Contact Us",
           contact_footer: "Contact Us",
           devis_heading: "Estimate the cost of my trip",
+          france_only_notice: "📍 Service available in France only",
           form_depart: "Departure",
           form_arrivee: "Arrival",
           form_date: "Date",
@@ -3809,6 +3829,8 @@
           copyright: "inayatransports.fr 2021 © جميع الحقوق محفوظة.",
           cities_alert:
             "الرجاء إدخال مدن صالحة من بين: باريس، مرسيليا، ليون، تولوز، نيس، نانت، ستراسبورغ، مونبلييه، بوردو، ليل",
+          france_only_error: "يجب أن تكون كل من عناوين المغادرة والوصول في فرنسا. يرجى إدخال عناوين فرنسية صالحة.",
+          location_not_found: "العنوان غير موجود. يرجى إدخال عنوان صالح في فرنسا.",
           placeholder_adresse: "أدخل عنوانًا",
           placeholder_nom: "اسمك",
           placeholder_email: "بريدك الإلكتروني",
@@ -3848,6 +3870,7 @@
           contact_heading: "اتصل بنا",
           contact_footer: "اتصل بنا",
           devis_heading: "احصل على تقدير تكلفة رحلتي",
+          france_only_notice: "📍 الخدمة متاحة في فرنسا فقط",
           form_depart: "المغادرة",
           form_arrivee: "الوصول",
           form_date: "التاريخ",
@@ -3876,6 +3899,7 @@
         contact: ".nav-menu a[href='#contact']",
         devis: ".nav-menu a[href='#devis']",
         devis_title: ".reservation-form h2",
+        france_only_notice: ".france-only-notice",
         contact_heading: ".contact-heading",
         contact_footer: ".contact-footer-heading",
         hero_title: ".hero-text h2",
@@ -4017,6 +4041,12 @@
         var arriveeInput = document.getElementById("arrivee");
         if (arriveeInput) arriveeInput.placeholder = translations[lang]["placeholder_adresse"];
 
+        // Update France-only notice
+        const franceNotice = document.querySelector('.france-only-notice');
+        if (franceNotice) {
+          franceNotice.textContent = translations[lang].france_only_notice;
+        }
+        
         // Update vehicle types
         document.querySelectorAll(".vehicle-btn").forEach((btn, index) => {
           const types = ["premium", "eco", "van"];
@@ -4378,9 +4408,33 @@
         
         async function fetchAddressSuggestions(query) {
           try {
-            const response = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5&lang=fr`);
+            // France bounding box coordinates (approximate)
+            // West: -5.5, East: 10.0, South: 41.0, North: 51.5
+            const response = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=10&lang=fr&bbox=-5.5,41.0,10.0,51.5`);
             const data = await response.json();
-            return data.features.map(feature => {
+            
+            // Filter results to only include addresses in France
+            const frenchFeatures = data.features.filter(feature => {
+              const properties = feature.properties;
+              // Check if the result is in France
+              return properties.country === 'France' || 
+                     properties.country === 'FR' || 
+                     (properties.state && properties.state.includes('France')) ||
+                     (properties.city && (
+                       properties.city.includes('Paris') ||
+                       properties.city.includes('Lyon') ||
+                       properties.city.includes('Marseille') ||
+                       properties.city.includes('Toulouse') ||
+                       properties.city.includes('Nice') ||
+                       properties.city.includes('Nantes') ||
+                       properties.city.includes('Strasbourg') ||
+                       properties.city.includes('Montpellier') ||
+                       properties.city.includes('Bordeaux') ||
+                       properties.city.includes('Lille')
+                     ));
+            });
+            
+            return frenchFeatures.map(feature => {
               const properties = feature.properties;
               const parts = [];
               
@@ -4495,26 +4549,7 @@
       });
     </script>
     <script>
-      // Function to calculate distance between two points using Haversine formula
-      function calculateDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371; // Earth's radius in kilometers
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = 
-          Math.sin(dLat/2) * Math.sin(dLat/2) +
-          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-          Math.sin(dLon/2) * Math.sin(dLon/2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        const distance = R * c;
-        return distance;
-      }
 
-      // Function to estimate driving time based on distance
-      function estimateDrivingTime(distance) {
-        const averageSpeed = 50; // Average speed in km/h
-        const timeInHours = distance / averageSpeed;
-        return Math.round(timeInHours * 60); // Convert to minutes
-      }
 
       async function calculateRoute(event) {
         event.preventDefault();
@@ -4527,32 +4562,41 @@
           // Show loading state
           document.querySelector('.calculate-btn').classList.add('loading');
           
-          // Fetch coordinates for departure
-          const departResponse = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(departInput.value)}&limit=1&lang=${currentLanguage}`);
+          // Fetch coordinates for departure (France only)
+          const departResponse = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(departInput.value)}&limit=5&lang=${currentLanguage}&bbox=-5.5,41.0,10.0,51.5`);
           const departData = await departResponse.json();
           
-          // Fetch coordinates for arrival
-          const arriveeResponse = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(arriveeInput.value)}&limit=1&lang=${currentLanguage}`);
+          // Fetch coordinates for arrival (France only)
+          const arriveeResponse = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(arriveeInput.value)}&limit=5&lang=${currentLanguage}&bbox=-5.5,41.0,10.0,51.5`);
           const arriveeData = await arriveeResponse.json();
           
           if (departData.features.length === 0 || arriveeData.features.length === 0) {
             throw new Error('Location not found');
           }
           
+          // Validate that both locations are in France
+          const departFeature = departData.features[0];
+          const arriveeFeature = arriveeData.features[0];
+          
+          const isDepartInFrance = departFeature.properties.country === 'France' || 
+                                   departFeature.properties.country === 'FR' ||
+                                   (departFeature.properties.state && departFeature.properties.state.includes('France'));
+                                   
+          const isArriveeInFrance = arriveeFeature.properties.country === 'France' || 
+                                   arriveeFeature.properties.country === 'FR' ||
+                                   (arriveeFeature.properties.state && arriveeFeature.properties.state.includes('France'));
+          
+          if (!isDepartInFrance || !isArriveeInFrance) {
+            throw new Error('Both departure and arrival locations must be in France');
+          }
+          
           const departCoords = departData.features[0].geometry.coordinates;
           const arriveeCoords = arriveeData.features[0].geometry.coordinates;
           
-          // Calculate straight-line distance
-          const straightLineDistance = calculateDistance(
-            departCoords[1], departCoords[0],
-            arriveeCoords[1], arriveeCoords[0]
-          );
-          
-          // Apply road distance multiplier (typically roads are 20-30% longer than straight line)
-          const roadDistance = straightLineDistance * 1.3;
-          
-          // Estimate duration
-          const duration = estimateDrivingTime(roadDistance);
+          // Get actual driving distance and duration using routing API
+          const routeInfo = await getDrivingRoute(departCoords, arriveeCoords);
+          const roadDistance = routeInfo.distance;
+          const duration = routeInfo.duration;
           
           // Calculate price based on vehicle type and distance
           let pricePerKm;
@@ -4598,7 +4642,17 @@
           
         } catch (error) {
           console.error('Error calculating route:', error);
-          alert(translations[currentLanguage].calculation_error || 'Error calculating route. Please try again.');
+          
+          let errorMessage;
+          if (error.message === 'Both departure and arrival locations must be in France') {
+            errorMessage = translations[currentLanguage].france_only_error || 'Both departure and arrival locations must be in France. Please enter valid French addresses.';
+          } else if (error.message === 'Location not found') {
+            errorMessage = translations[currentLanguage].location_not_found || 'Location not found. Please enter a valid address in France.';
+          } else {
+            errorMessage = translations[currentLanguage].calculation_error || 'Error calculating route. Please try again.';
+          }
+          
+          alert(errorMessage);
         } finally {
           // Hide loading state
           document.querySelector('.calculate-btn').classList.remove('loading');
@@ -4671,6 +4725,87 @@
           });
         }
       });
+    </script>
+    <script>
+      /*
+       * IMPORTANT: To get accurate driving distances instead of straight-line calculations,
+       * you need to get a free API key from OpenRouteService:
+       * 1. Go to https://openrouteservice.org/dev/#/signup
+       * 2. Sign up for a free account
+       * 3. Get your API key
+       * 4. Replace 'YOUR_API_KEY_HERE' in the getDrivingRoute function below
+       * 
+       * Without the API key, the system will fall back to the old Haversine calculation.
+       */
+      
+      // Function to get actual driving distance and duration using OpenRouteService
+      async function getDrivingRoute(coords1, coords2) {
+        try {
+          // OpenRouteService API endpoint for driving directions (free tier)
+          // Note: You need to get a free API key from https://openrouteservice.org/dev/#/signup
+          // Replace YOUR_API_KEY_HERE with your actual API key
+          const apiKey = 'YOUR_API_KEY_HERE';
+          if (apiKey === 'YOUR_API_KEY_HERE') {
+            throw new Error('Please set your OpenRouteService API key');
+          }
+          
+          const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&start=${coords1[0]},${coords1[1]}&end=${coords2[0]},${coords2[1]}`;
+          
+          const response = await fetch(url);
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Routing API error:', response.status, errorText);
+            throw new Error(`Routing API request failed: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          
+          if (data.features && data.features.length > 0) {
+            const route = data.features[0];
+            if (route.properties && route.properties.segments && route.properties.segments.length > 0) {
+              const distance = route.properties.segments[0].distance / 1000; // Convert meters to km
+              const duration = Math.round(route.properties.segments[0].duration / 60); // Convert seconds to minutes
+              
+              return { distance, duration };
+            } else {
+              throw new Error('Invalid route data structure');
+            }
+          } else {
+            throw new Error('No route found');
+          }
+        } catch (error) {
+          console.error('Error getting driving route:', error);
+          
+          if (error.message === 'Please set your OpenRouteService API key') {
+            alert('Please set your OpenRouteService API key to get accurate driving distances. Using fallback calculation instead.');
+          } else if (error.message.includes('Routing API request failed')) {
+            console.warn('Routing API failed, using fallback calculation');
+          } else {
+            console.warn('Routing API error, using fallback calculation:', error.message);
+          }
+          
+          // Fallback to Haversine calculation if routing API fails
+          const fallbackDistance = calculateDistanceHaversine(coords1[1], coords1[0], coords2[1], coords2[0]) * 1.3;
+          const fallbackDuration = Math.round(fallbackDistance / 50 * 60); // 50 km/h average speed
+          return { distance: fallbackDistance, duration: fallbackDuration };
+        }
+      }
+
+      // Fallback Haversine function (kept for emergency use)
+      function calculateDistanceHaversine(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Earth's radius in kilometers
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = 
+          Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+          Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        const distance = R * c;
+        return distance;
+      }
+
+// ... existing code ...
     </script>
   </body>
 </html>
