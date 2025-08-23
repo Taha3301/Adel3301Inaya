@@ -85,6 +85,103 @@ function setupAddressAutocomplete(inputId, suggestionsContainerId) {
   });
 }
 
+// Function to get driving route using OpenRouteService
+async function getDrivingRoute(startCoords, endCoords) {
+  // OpenRouteService API endpoint for driving directions
+  const apiUrl = 'https://api.openrouteservice.org/v2/directions/driving-car';
+  
+  // Note: You'll need to get a free API key from https://openrouteservice.org/
+  // For now, I'll use a placeholder. Replace with your actual API key
+  const apiKey = 'YOUR_OPENROUTESERVICE_API_KEY'; // Replace this with your actual API key
+  
+  const requestBody = {
+    coordinates: [
+      [startCoords[0], startCoords[1]], // [longitude, latitude]
+      [endCoords[0], endCoords[1]]      // [longitude, latitude]
+    ],
+    instructions: false,
+    geometry: false,
+    elevation: false
+  };
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': apiKey,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('[DEBUG] OpenRouteService response:', data);
+
+    if (data.features && data.features.length > 0) {
+      const route = data.features[0];
+      const properties = route.properties;
+      
+      // Distance in meters, convert to km
+      const distanceKm = properties.segments[0].distance / 1000;
+      
+      // Duration in seconds, convert to minutes
+      const durationMinutes = Math.round(properties.segments[0].duration / 60);
+      
+      return {
+        distance: distanceKm,
+        duration: durationMinutes
+      };
+    } else {
+      throw new Error('No route found');
+    }
+  } catch (error) {
+    console.error('[DEBUG] OpenRouteService API error:', error);
+    throw error;
+  }
+}
+
+// Alternative function using OSRM (free, no API key required)
+async function getDrivingRouteOSRM(startCoords, endCoords) {
+  // OSRM API endpoint for driving directions
+  const apiUrl = `https://router.project-osrm.org/route/v1/driving/${startCoords[0]},${startCoords[1]};${endCoords[0]},${endCoords[1]}?overview=false&steps=false&annotations=false`;
+  
+  try {
+    const response = await fetch(apiUrl);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('[DEBUG] OSRM response:', data);
+
+    if (data.routes && data.routes.length > 0) {
+      const route = data.routes[0];
+      
+      // Distance in meters, convert to km
+      const distanceKm = route.distance / 1000;
+      
+      // Duration in seconds, convert to minutes
+      const durationMinutes = Math.round(route.duration / 60);
+      
+      return {
+        distance: distanceKm,
+        duration: durationMinutes
+      };
+    } else {
+      throw new Error('No route found');
+    }
+  } catch (error) {
+    console.error('[DEBUG] OSRM API error:', error);
+    throw error;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   console.log("DOM loaded");
   setupAddressAutocomplete('depart', 'depart-suggestions-container');
@@ -187,11 +284,11 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       try {
-        // Get coordinates for departure location
+        // Get coordinates for departure location using Photon
         const departResponse = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(depart)}&limit=1`);
         const departData = await departResponse.json();
         
-        // Get coordinates for arrival location
+        // Get coordinates for arrival location using Photon
         const arriveeResponse = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(arrivee)}&limit=1`);
         const arriveeData = await arriveeResponse.json();
 
@@ -200,28 +297,33 @@ document.addEventListener('DOMContentLoaded', function () {
           return;
         }
 
-        // Extract coordinates
+        // Extract coordinates [longitude, latitude]
         const departCoords = departData.features[0].geometry.coordinates;
         const arriveeCoords = arriveeData.features[0].geometry.coordinates;
 
-        // Calculate distance using Haversine formula
-        const R = 6371; // Earth's radius in kilometers
-        const lat1 = departCoords[1] * Math.PI / 180;
-        const lat2 = arriveeCoords[1] * Math.PI / 180;
-        const deltaLat = (arriveeCoords[1] - departCoords[1]) * Math.PI / 180;
-        const deltaLon = (arriveeCoords[0] - departCoords[0]) * Math.PI / 180;
+        console.log(`[DEBUG] Departure coordinates: [${departCoords[0]}, ${departCoords[1]}]`);
+        console.log(`[DEBUG] Arrival coordinates: [${arriveeCoords[0]}, ${arriveeCoords[1]}]`);
 
-        const a = Math.sin(deltaLat/2) * Math.sin(deltaLat/2) +
-                 Math.cos(lat1) * Math.cos(lat2) *
-                 Math.sin(deltaLon/2) * Math.sin(deltaLon/2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        
-        // Calculate straight-line distance and apply road factor
-        const straightLineDistance = R * c;
-        const distanceKm = straightLineDistance * 1.3; // Apply 1.3x factor for road distance
+        // Get driving route using OSRM (free, no API key required)
+        let routeData;
+        try {
+          routeData = await getDrivingRouteOSRM(departCoords, arriveeCoords);
+          console.log(`[DEBUG] Route data from OSRM:`, routeData);
+        } catch (osrmError) {
+          console.error('[DEBUG] OSRM failed, trying OpenRouteService:', osrmError);
+          // Fallback to OpenRouteService if OSRM fails
+          try {
+            routeData = await getDrivingRoute(departCoords, arriveeCoords);
+            console.log(`[DEBUG] Route data from OpenRouteService:`, routeData);
+          } catch (orsError) {
+            console.error('[DEBUG] Both routing APIs failed:', orsError);
+            showModalError('Impossible de calculer l\'itinéraire. Veuillez réessayer.');
+            return;
+          }
+        }
 
-        // Estimate duration (assuming average speed of 50 km/h)
-        const durationMinutes = Math.round((distanceKm / 50) * 60);
+        const distanceKm = routeData.distance;
+        const durationMinutes = routeData.duration;
         
         // Calculate price based on vehicle type and distance
         let pricePerKm;
@@ -284,16 +386,16 @@ document.addEventListener('DOMContentLoaded', function () {
           }, 50);
         }
 
-        console.log(`Distance: ${distanceKm.toFixed(1)} km`);
+        console.log(`Distance de conduite: ${distanceKm.toFixed(1)} km`);
         // Log duration in h m s format
         const totalSeconds = durationMinutes * 60;
         const hours = Math.floor(totalSeconds / 3600);
         const minutes = Math.floor((totalSeconds % 3600) / 60);
         const seconds = Math.round(totalSeconds % 60);
         if (hours > 0) {
-          console.log(`Durée: ${hours}h ${minutes}m ${seconds}s`);
+          console.log(`Durée de conduite: ${hours}h ${minutes}m ${seconds}s`);
         } else {
-          console.log(`Durée: ${minutes}m ${seconds}s`);
+          console.log(`Durée de conduite: ${minutes}m ${seconds}s`);
         }
         console.log(`Prix estimé: ${price.toFixed(2)} €`);
         
