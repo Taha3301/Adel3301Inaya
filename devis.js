@@ -342,6 +342,11 @@ document.addEventListener('DOMContentLoaded', function () {
         let price = distanceKm * pricePerKm;
         if (hasBabySeat) price += 10;
         if (hasBooster) price += 5;
+        // Add fixed "prise en charge"
+        price += 10;
+        // Enforce minimum fare of 15 €
+        if (price < 15) price = 15;
+        
         price = Math.round(price * 100) / 100;
 
         // Update modal values
